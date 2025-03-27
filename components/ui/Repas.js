@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function Repas() {
+export default function Repas({ plat, quantiteSel, quantiteCalories, date }) {
     return (
         <View style={styles.repasContainer}>
-            <Text style={styles.repasText}>Bloc Repas</Text>
+            <Text style={styles.repasText}>Plats : {plat}</Text>
+            <Text style={styles.repasText}>Quantité de sel : {quantiteSel}g</Text>
+            <Text style={styles.repasText}>Calories : {quantiteCalories} kcal</Text>
+            <Text style={styles.repasText}>Date : {date}</Text>
         </View>
     );
 }
