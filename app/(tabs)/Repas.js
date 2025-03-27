@@ -11,15 +11,15 @@ export default function Repas() {
 //a
 const styles = StyleSheet.create({
     repasContainer: {
-        backgroundColor: "#D3D3D3", // Gris clair
-        borderRadius: 12, // Bords arrondis
+        backgroundColor: "#D3D3D3",
+        borderRadius: 12,
         padding: 20,
         margin: 10,
-        width: "40%", // Largeur de 90% de l'écran
-        alignItems: "center", // Centrer le texte dans le bloc
+        width: "40%",
+        alignItems: "center",
     },
     repasText: {
         fontSize: 16,
-        color: "#333", // Couleur du texte
+        color: "#333",
     },
 });

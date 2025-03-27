@@ -10,10 +10,10 @@ const Footer = () => {
     const handleImport = async () => {
         try {
             const result = await DocumentPicker.getDocumentAsync({
-                type: 'application/json',  // Limite les fichiers à JSON
+                type: 'application/json',
             });
             if (result.type === 'success') {
-                setSelectedFile(result); // Stocke le fichier sélectionné
+                setSelectedFile(result);
                 Alert.alert('Fichier sélectionné', `Nom du fichier: ${result.name}`);
             } else {
                 console.log('Sélection de fichier annulée');
@@ -26,7 +26,6 @@ const Footer = () => {
 
     return (
         <View style={styles.footer}>
-            {/* Ligne du bas avec 4 boutons */}
             <View style={styles.row}>
                 <TouchableOpacity style={styles.iconButton}>
                     <Icon name="calendar" size={30} color="#000" />
@@ -34,7 +33,6 @@ const Footer = () => {
                 <TouchableOpacity style={styles.iconButton}>
                     <Icon name="clipboard" size={30} color="#000" />
                 </TouchableOpacity>
-                {/* Le 3e bouton "download" déclenche la fonction d'importation */}
                 <TouchableOpacity style={styles.iconButton} onPress={handleImport}>
                     <Icon name="download" size={30} color="#000" />
                 </TouchableOpacity>
@@ -42,7 +40,6 @@ const Footer = () => {
                     <Icon name="link" size={30} color="#000" />
                 </TouchableOpacity>
             </View>
-            {/* Bouton + au centre sur la ligne du haut */}
             <TouchableOpacity style={styles.addButton}>
                 <Icon name="add" size={40} color="#fff" />
             </TouchableOpacity>

@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Footer from "../../components/ui/footer";  // Vérifie le chemin d'importation
 import Gauge from "../../components/ui/Gauge";
+import Repas from "./Repas";
+import FormAdd from "../../components/ui/FormAdd";
 
 export default function Index() {
     return (
@@ -11,7 +13,7 @@ export default function Index() {
         </View>
     );
 }
-//a
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
