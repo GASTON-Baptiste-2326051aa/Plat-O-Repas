@@ -1,10 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import Footer from "../../components/ui/footer";  // Vérifie le chemin d'importation
 
 export default function Index() {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Hello, React Native!</Text>
+            <Text style={styles.text}>Bienvenue dans l'application</Text>
+            <Footer />
         </View>
     );
 }
