@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Footer from "../../components/ui/footer";  // Vérifie le chemin d'importation
+import Gauge from "../../components/ui/Gauge";
 
 export default function Index() {
     return (
