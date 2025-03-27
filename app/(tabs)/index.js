@@ -13,7 +13,7 @@ export default function Index() {
         </View>
     );
 }
-
+//a
 const styles = StyleSheet.create({
     container: {
         flex: 1,
