@@ -1,14 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import JaugeScreen from "../../components/ui/JaugeScreen";
-import Repas from "./Repas";
+import Footer from "../../components/ui/footer";  // Vérifie le chemin d'importation
+import Gauge from "../../components/ui/Gauge";
 
 export default function Index() {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Hello, React Native!</Text>
-            <JaugeScreen></JaugeScreen>
-            <Repas></Repas>
+            <Text style={styles.text}>Bienvenue dans l'application</Text>
+            <Footer />
         </View>
     );
 }
