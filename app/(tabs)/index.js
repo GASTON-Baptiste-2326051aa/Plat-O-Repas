@@ -5,21 +5,57 @@ import GaugeScreen from "../../components/ui/Gauge";  // Assurez-vous du chemin
 import { StyleSheet } from "react-native";
 
 const Stack = createStackNavigator();
+import data from "../../constants/data.json";
+import {Calendar} from "./Calendar.js";
 
 export default function Index() {
-    const days = data.days;
-    const plats = data.plats;
-    const ingredients = data.ingredients;
+    const days = data.day || [];
+    const plats = data.plats || [];
+    const ingredients = data.ingredients || [];
 
-    days.forEach((day) => {
-        day.plat = plats.find((plat) => plat.id === day.plat);
-    });
+    function formatDate(inputDate) {
+        const date = new Date(inputDate);
+        const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+        const dayOfWeek = daysOfWeek[date.getDay()];
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        return `${dayOfWeek} ${day}/${month}`;
+    }
 
-    plats.forEach((plat) => {
-        plat.ingredients = plat.ingredients.map((ingredient) => ingredients.find((i) => i.id === ingredient));
-    });
+    const daysWithPlats = days.reduce((acc, day) => {
+        const platsOfDay = plats.filter((plat) => plat.id === day.plat).map((plat) => {
+            const platIngredients = plat.ingredients.map((ingredient) => {
+                const ingredientDetails = ingredients.find((i) => i.id === ingredient.id);
+                return {
+                    ...ingredient,
+                    name: ingredientDetails ? ingredientDetails.name : "Ingrédient inconnu"
+                };
+            });
+            return {
+                ...plat,
+                ingredients: platIngredients
+            };
+        });
+
+        const existingDay = acc.find(d => d.date === day.date);
+        if (existingDay) {
+            existingDay.plats.push(...platsOfDay);
+        } else {
+            acc.push({
+                date: formatDate(day.date),
+                plats: platsOfDay
+            });
+        }
+        return acc;
+    }, []);
 
     return (
+        <View style={index.container}>
+            <Text style={index.text}>Bienvenue dans l'application</Text>
+            <Calendar day={days} />
+            <IngredientPlatsRepasScreen></IngredientPlatsRepasScreen>
+            <Footer />
+        </View>
             <Stack.Navigator initialRouteName="Homepage" >
                 {/* Définir les écrans dans le stack */}
                 <Stack.Screen name="Homepage" component={Homepage} />
@@ -27,17 +63,3 @@ export default function Index() {
             </Stack.Navigator>
     );
 }
-//a
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f0f0f0",
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: "bold",
-        color: "#333",
-    },
-});
