@@ -8,6 +8,11 @@ import GaugeScreen from "../../components/ui/Gauge";  // Assurez-vous du chemin
 
 // Créer le stack navigator
 const Stack = createStackNavigator();
+import { View, Text, StyleSheet } from "react-native";
+import Footer from "../../components/ui/footer";  // Vérifie le chemin d'importation
+import Gauge from "../../components/ui/Gauge";
+import Repas from "./Repas";
+import FormAdd from "../../components/ui/FormAdd";
 
 export default function Index() {
     return (
