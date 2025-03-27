@@ -1,24 +1,25 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {index} from "../../assets/style/style.js";
+import { View, Text } from "react-native";
+
+import data from "../../constants/data.json";
 
 export default function Index() {
+    const days = data.days;
+    const plats = data.plats;
+    const ingredients = data.ingredients;
+
+    days.forEach((day) => {
+        day.plat = plats.find((plat) => plat.id === day.plat);
+    });
+
+    plats.forEach((plat) => {
+        plat.ingredients = plat.ingredients.map((ingredient) => ingredients.find((i) => i.id === ingredient));
+    });
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Hello, React Native!</Text>
+        <View style={index.container}>
+            <Calendar day={days} />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f0f0f0",
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: "bold",
-        color: "#333",
-    },
-});
