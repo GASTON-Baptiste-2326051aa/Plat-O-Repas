@@ -3,10 +3,11 @@ import { View, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as DocumentPicker from 'expo-document-picker';
 import { useNavigation } from '@react-navigation/native';
-import styles from './footerStyle';
+import styles from './../../assets/styles/footerStyle';
 
 const Footer = () => {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [showForm, setShowForm] = useState(false);
     const navigation = useNavigation();
 
     const handleImport = async () => {
