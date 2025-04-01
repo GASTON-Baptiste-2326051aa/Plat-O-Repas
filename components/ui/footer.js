@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as DocumentPicker from 'expo-document-picker';
-import { useNavigation } from '@react-navigation/native'; // Utilisation de useNavigation
+import { useNavigation } from '@react-navigation/native';
 import styles from './footerStyle';
+import FormAdd from './FormAdd';
 
 const Footer = () => {
     const [selectedFile, setSelectedFile] = useState(null);
-    const navigation = useNavigation(); // Utilisation de useNavigation
+    const [showForm, setShowForm] = useState(false);
+    const navigation = useNavigation();
 
     const handleImport = async () => {
         try {
@@ -26,21 +28,30 @@ const Footer = () => {
         }
     };
 
+    const handleFormSave = (item) => {
+        // Ici vous pouvez implémenter la logique pour sauvegarder l'élément
+        console.log('Item sauvegardé:', item);
+        Alert.alert('Élément ajouté', `Nom: ${item.name}\nCalories: ${item.calories} kcal\nSel: ${item.salt} g`);
+    };
+
     return (
         <View style={styles.footer}>
-            {/* Ligne du bas avec 4 boutons */}
+            <FormAdd
+                visible={showForm}
+                onClose={() => setShowForm(false)}
+                onSave={handleFormSave}
+            />
+
             <View style={styles.row}>
                 <TouchableOpacity style={styles.iconButton}>
                     <Icon name="calendar" size={30} color="#000" />
                 </TouchableOpacity>
-                {/* Bouton 2ème à partir de la gauche pour la navigation vers GaugeScreen */}
                 <TouchableOpacity
                     style={styles.iconButton}
-                    onPress={() => navigation.navigate('GaugeScreen')} // Assure-toi que le nom correspond bien à "GaugeScreen"
+                    onPress={() => navigation.navigate('GaugeScreen')}
                 >
                     <Icon name="clipboard" size={30} color="#000" />
                 </TouchableOpacity>
-                {/* Le 3e bouton "download" déclenche la fonction d'importation */}
                 <TouchableOpacity style={styles.iconButton} onPress={handleImport}>
                     <Icon name="download" size={30} color="#000" />
                 </TouchableOpacity>
@@ -48,8 +59,11 @@ const Footer = () => {
                     <Icon name="link" size={30} color="#000" />
                 </TouchableOpacity>
             </View>
-            {/* Bouton + au centre sur la ligne du haut */}
-            <TouchableOpacity style={styles.addButton}>
+
+            <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => setShowForm(true)}
+            >
                 <Icon name="add" size={40} color="#fff" />
             </TouchableOpacity>
         </View>

@@ -9,7 +9,6 @@ const Stack = createStackNavigator();
 export default function Index() {
     return (
             <Stack.Navigator initialRouteName="Homepage" >
-                {/* Définir les écrans dans le stack */}
                 <Stack.Screen name="Homepage" component={Homepage} />
                 <Stack.Screen name="GaugeScreen" component={GaugeScreen} />
             </Stack.Navigator>

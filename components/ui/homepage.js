@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Footer from "./footer";
-import IngredientPlatsRepasScreen from "./IngredientPlatsRepasScreen"; // Vérifie le chemin d'importation
+import IngredientPlatsRepasScreen from "./IngredientPlatsRepasScreen";
 
 const Homepage = () => {
     return(
@@ -18,15 +18,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f0f0f0', // Couleur de fond claire
+        backgroundColor: '#f0f0f0',
         padding: 20,
     },
     text: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#333', // Couleur de texte foncé pour contraster avec le fond
+        color: '#333',
         textAlign: 'center',
-        marginBottom: 40, // Marge pour espacer du footer
+        marginBottom: 40,
     },
 });
 
