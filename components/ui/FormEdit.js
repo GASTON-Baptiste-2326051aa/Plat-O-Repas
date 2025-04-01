@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     saveButton: {
-        backgroundColor: "#2196F3",
+        backgroundColor: "#4CAF50",
     },
     cancelButton: {
         backgroundColor: "#f44336",
