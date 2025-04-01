@@ -5,14 +5,19 @@ import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 
 const INGREDIENTS_DATA = [
+    { id: '1', name: 'Tomate', sel: '2', calories: '20' },
+    { id: '2', name: 'Salade', sel: '1', calories: '15' },
+    { id: '3', name: 'Ail', sel: '3', calories: '30' }
 ];
 
 const PLATS_DATA = [
-
+    { id: '1', name: 'Salade de tomates', ingredients: ['Tomate'], sel: '2', calories: '20' },
+    { id: '2', name: 'Salade verte', ingredients: ['Salade'], sel: '1', calories: '15' }
 ];
 
 export const REPAS_DATA = [
-
+    { id: '1', name: 'Déjeuner', plats: ['Salade de tomates'], sel: '2', calories: '20' },
+    { id: '2', name: 'Dîner', plats: ['Salade verte'], sel: '1', calories: '15' }
 ];
 
 const IngredientPlatsRepasScreen = () => {
@@ -73,7 +78,7 @@ const IngredientPlatsRepasScreen = () => {
                 const newPlat = {
                     id: (platsData.length + 1).toString(),
                     name: newItem.name,
-                    ingredients: [],
+                    ingredients: newItem.ingredients || [],
                     sel: newItem.salt,
                     calories: newItem.calories
                 };
@@ -83,7 +88,7 @@ const IngredientPlatsRepasScreen = () => {
                 const newRepas = {
                     id: (repasData.length + 1).toString(),
                     name: newItem.name,
-                    plats: [],
+                    plats: newItem.plats || [],
                     sel: newItem.salt,
                     calories: newItem.calories
                 };
@@ -98,6 +103,12 @@ const IngredientPlatsRepasScreen = () => {
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text>Sel : {item.sel}g</Text>
                 <Text>Calories : {item.calories}kcal</Text>
+                {item.ingredients && item.ingredients.length > 0 && (
+                    <Text>Ingrédients : {item.ingredients.join(', ')}</Text>
+                )}
+                {item.plats && item.plats.length > 0 && (
+                    <Text>Plats : {item.plats.join(', ')}</Text>
+                )}
             </View>
             <TouchableOpacity
                 style={styles.editButton}
@@ -196,6 +207,8 @@ const IngredientPlatsRepasScreen = () => {
                     handleAddItem(newItem);
                     setShowAddForm(false);
                 }}
+                currentTab={activeTab}
+                ingredients={ingredientsData}
             />
         </View>
     );

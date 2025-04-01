@@ -7,13 +7,15 @@ import {
     Modal,
     StyleSheet,
     Platform,
+    ScrollView,
+    FlatList,
 } from "react-native";
 
-
-const FormAdd = ({ visible, onClose, onSave }) => {
+const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => {
     const [name, setName] = useState("");
     const [calories, setCalories] = useState("");
     const [salt, setSalt] = useState("");
+    const [selectedIngredients, setSelectedIngredients] = useState([]);
 
     const handleSave = () => {
         if (!name.trim()) {
@@ -34,7 +36,8 @@ const FormAdd = ({ visible, onClose, onSave }) => {
         const newItem = {
             name: name.trim(),
             calories: calories.trim(),
-            salt: salt.trim()
+            salt: salt.trim(),
+            ingredients: selectedIngredients.map(ing => ing.name),
         };
 
         if (onSave) {
@@ -42,9 +45,7 @@ const FormAdd = ({ visible, onClose, onSave }) => {
         }
 
         // Réinitialiser le formulaire
-        setName("");
-        setCalories("");
-        setSalt("");
+        resetForm();
 
         // Fermer le modal
         if (onClose) {
@@ -53,9 +54,7 @@ const FormAdd = ({ visible, onClose, onSave }) => {
     };
 
     const handleCancel = () => {
-        setName("");
-        setCalories("");
-        setSalt("");
+        resetForm();
 
         // Fermer le modal
         if (onClose) {
@@ -63,53 +62,116 @@ const FormAdd = ({ visible, onClose, onSave }) => {
         }
     };
 
+    const resetForm = () => {
+        setName("");
+        setCalories("");
+        setSalt("");
+        setSelectedIngredients([]);
+    };
+
+    const toggleIngredientSelection = (ingredient) => {
+        const isSelected = selectedIngredients.some(ing => ing.id === ingredient.id);
+
+        if (isSelected) {
+            setSelectedIngredients(selectedIngredients.filter(ing => ing.id !== ingredient.id));
+        } else {
+            setSelectedIngredients([...selectedIngredients, ingredient]);
+        }
+    };
+
+    const renderIngredientItem = ({ item }) => {
+        const isSelected = selectedIngredients.some(ing => ing.id === item.id);
+
+        return (
+            <TouchableOpacity
+                style={[
+                    styles.ingredientItem,
+                    isSelected && styles.selectedIngredientItem
+                ]}
+                onPress={() => toggleIngredientSelection(item)}
+            >
+                <Text style={[
+                    styles.ingredientName,
+                    isSelected && styles.selectedIngredientText
+                ]}>
+                    {item.name}
+                </Text>
+                <Text style={isSelected && styles.selectedIngredientText}>
+                    {isSelected ? "✓" : ""}
+                </Text>
+            </TouchableOpacity>
+        );
+    };
+
     return (
         <Modal visible={visible} animationType="slide" transparent={true}>
             <View style={styles.modalOverlay}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Ajouter un élément</Text>
+                    <ScrollView>
+                        <Text style={styles.modalTitle}>
+                            {currentTab === "Plats"
+                                ? "Ajouter un plat"
+                                : currentTab === "Repas"
+                                    ? "Ajouter un repas"
+                                    : "Ajouter un ingrédient"}
+                        </Text>
 
-                    <Text style={styles.label}>Nom</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Nom..."
-                        value={name}
-                        onChangeText={setName}
-                    />
+                        <Text style={styles.label}>Nom</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Nom..."
+                            value={name}
+                            onChangeText={setName}
+                        />
 
-                    <Text style={styles.label}>Quantité de calories (en kcal)</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Calories..."
-                        keyboardType="numeric"
-                        value={calories}
-                        onChangeText={setCalories}
-                    />
+                        <Text style={styles.label}>Quantité de calories (en kcal)</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Calories..."
+                            keyboardType="numeric"
+                            value={calories}
+                            onChangeText={setCalories}
+                        />
 
-                    <Text style={styles.label}>Quantité de sel (en grammes)</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Sel..."
-                        keyboardType="numeric"
-                        value={salt}
-                        onChangeText={setSalt}
-                    />
+                        <Text style={styles.label}>Quantité de sel (en grammes)</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Sel..."
+                            keyboardType="numeric"
+                            value={salt}
+                            onChangeText={setSalt}
+                        />
 
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                            style={[styles.button, styles.addButton]}
-                            onPress={handleSave}
-                        >
-                            <Text style={styles.buttonText}>Ajouter</Text>
-                        </TouchableOpacity>
+                        {currentTab === "Plats" && ingredients.length > 0 && (
+                            <View style={styles.ingredientsSection}>
+                                <Text style={styles.label}>Sélectionner les ingrédients</Text>
+                                <FlatList
+                                    data={ingredients}
+                                    renderItem={renderIngredientItem}
+                                    keyExtractor={item => item.id}
+                                    style={styles.ingredientsList}
+                                    scrollEnabled={false}
+                                    nestedScrollEnabled={true}
+                                />
+                            </View>
+                        )}
 
-                        <TouchableOpacity
-                            style={[styles.button, styles.cancelButton]}
-                            onPress={handleCancel}
-                        >
-                            <Text style={styles.buttonText}>Annuler</Text>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity
+                                style={[styles.button, styles.addButton]}
+                                onPress={handleSave}
+                            >
+                                <Text style={styles.buttonText}>Ajouter</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[styles.button, styles.cancelButton]}
+                                onPress={handleCancel}
+                            >
+                                <Text style={styles.buttonText}>Annuler</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
                 </View>
             </View>
         </Modal>
@@ -125,6 +187,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: "85%",
+        maxHeight: "80%",
         backgroundColor: "#f8f8f8",
         padding: 20,
         borderRadius: 10,
@@ -155,6 +218,33 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 1,
         borderColor: "#ddd",
+    },
+    ingredientsSection: {
+        marginBottom: 15,
+    },
+    ingredientsList: {
+        maxHeight: 200,
+    },
+    ingredientItem: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: 10,
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 5,
+        marginBottom: 5,
+        backgroundColor: "#fff",
+    },
+    selectedIngredientItem: {
+        backgroundColor: "#4CAF50",
+        borderColor: "#4CAF50",
+    },
+    ingredientName: {
+        fontSize: 14,
+    },
+    selectedIngredientText: {
+        color: "#fff",
+        fontWeight: "bold",
     },
     buttonContainer: {
         flexDirection: "row",
