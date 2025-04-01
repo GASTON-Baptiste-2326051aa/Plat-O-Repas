@@ -28,7 +28,6 @@ const Footer = () => {
 
     return (
         <View style={styles.footer}>
-            {/* Ligne du bas avec 4 boutons */}
             <View style={styles.row}>
                 <TouchableOpacity style={styles.iconButton}>
                     <Icon name="calendar" size={30} color="#000" />

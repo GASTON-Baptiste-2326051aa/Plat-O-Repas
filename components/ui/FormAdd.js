@@ -11,11 +11,12 @@ import {
     FlatList,
 } from "react-native";
 
-const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => {
+const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats = [] }) => {
     const [name, setName] = useState("");
     const [calories, setCalories] = useState("");
     const [salt, setSalt] = useState("");
     const [selectedIngredients, setSelectedIngredients] = useState([]);
+    const [selectedPlats, setSelectedPlats] = useState([]);
 
     const handleSave = () => {
         if (!name.trim()) {
@@ -37,8 +38,17 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => 
             name: name.trim(),
             calories: calories.trim(),
             salt: salt.trim(),
-            ingredients: selectedIngredients.map(ing => ing.name),
         };
+
+        // Ajouter les ingrédients sélectionnés si on est dans l'onglet "Plats"
+        if (currentTab === "Plats") {
+            newItem.ingredients = selectedIngredients.map(ing => ing.name);
+        }
+
+        // Ajouter les plats sélectionnés si on est dans l'onglet "Repas"
+        if (currentTab === "Repas") {
+            newItem.plats = selectedPlats.map(plat => plat.name);
+        }
 
         if (onSave) {
             onSave(newItem);
@@ -67,6 +77,7 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => 
         setCalories("");
         setSalt("");
         setSelectedIngredients([]);
+        setSelectedPlats([]);
     };
 
     const toggleIngredientSelection = (ingredient) => {
@@ -76,6 +87,16 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => 
             setSelectedIngredients(selectedIngredients.filter(ing => ing.id !== ingredient.id));
         } else {
             setSelectedIngredients([...selectedIngredients, ingredient]);
+        }
+    };
+
+    const togglePlatSelection = (plat) => {
+        const isSelected = selectedPlats.some(p => p.id === plat.id);
+
+        if (isSelected) {
+            setSelectedPlats(selectedPlats.filter(p => p.id !== plat.id));
+        } else {
+            setSelectedPlats([...selectedPlats, plat]);
         }
     };
 
@@ -89,6 +110,30 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => 
                     isSelected && styles.selectedIngredientItem
                 ]}
                 onPress={() => toggleIngredientSelection(item)}
+            >
+                <Text style={[
+                    styles.ingredientName,
+                    isSelected && styles.selectedIngredientText
+                ]}>
+                    {item.name}
+                </Text>
+                <Text style={isSelected && styles.selectedIngredientText}>
+                    {isSelected ? "✓" : ""}
+                </Text>
+            </TouchableOpacity>
+        );
+    };
+
+    const renderPlatItem = ({ item }) => {
+        const isSelected = selectedPlats.some(p => p.id === item.id);
+
+        return (
+            <TouchableOpacity
+                style={[
+                    styles.ingredientItem,
+                    isSelected && styles.selectedIngredientItem
+                ]}
+                onPress={() => togglePlatSelection(item)}
             >
                 <Text style={[
                     styles.ingredientName,
@@ -128,7 +173,7 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => 
                         <TextInput
                             style={styles.input}
                             placeholder="Calories..."
-                            keyboardType="numeric"
+                            keyboardType='numeric'
                             value={calories}
                             onChangeText={setCalories}
                         />
@@ -137,7 +182,7 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => 
                         <TextInput
                             style={styles.input}
                             placeholder="Sel..."
-                            keyboardType="numeric"
+                            keyboardType='numeric'
                             value={salt}
                             onChangeText={setSalt}
                         />
@@ -156,19 +201,32 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [] }) => 
                             </View>
                         )}
 
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity
-                                style={[styles.button, styles.addButton]}
-                                onPress={handleSave}
-                            >
-                                <Text style={styles.buttonText}>Ajouter</Text>
-                            </TouchableOpacity>
+                        {currentTab === "Repas" && plats.length > 0 && (
+                            <View style={styles.ingredientsSection}>
+                                <Text style={styles.label}>Sélectionner les plats</Text>
+                                <FlatList
+                                    data={plats}
+                                    renderItem={renderPlatItem}
+                                    keyExtractor={item => item.id}
+                                    style={styles.ingredientsList}
+                                    scrollEnabled={false}
+                                    nestedScrollEnabled={true}
+                                />
+                            </View>
+                        )}
 
+                        <View style={styles.buttonContainer}>
                             <TouchableOpacity
                                 style={[styles.button, styles.cancelButton]}
                                 onPress={handleCancel}
                             >
                                 <Text style={styles.buttonText}>Annuler</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, styles.addButton]}
+                                onPress={handleSave}
+                            >
+                                <Text style={styles.buttonText}>Ajouter</Text>
                             </TouchableOpacity>
                         </View>
                     </ScrollView>

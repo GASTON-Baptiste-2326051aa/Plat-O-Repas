@@ -5,19 +5,14 @@ import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 
 const INGREDIENTS_DATA = [
-    { id: '1', name: 'Tomate', sel: '2', calories: '20' },
-    { id: '2', name: 'Salade', sel: '1', calories: '15' },
-    { id: '3', name: 'Ail', sel: '3', calories: '30' }
+
 ];
 
 const PLATS_DATA = [
-    { id: '1', name: 'Salade de tomates', ingredients: ['Tomate'], sel: '2', calories: '20' },
-    { id: '2', name: 'Salade verte', ingredients: ['Salade'], sel: '1', calories: '15' }
+
 ];
 
 export const REPAS_DATA = [
-    { id: '1', name: 'Déjeuner', plats: ['Salade de tomates'], sel: '2', calories: '20' },
-    { id: '2', name: 'Dîner', plats: ['Salade verte'], sel: '1', calories: '15' }
 ];
 
 const IngredientPlatsRepasScreen = () => {
@@ -209,6 +204,7 @@ const IngredientPlatsRepasScreen = () => {
                 }}
                 currentTab={activeTab}
                 ingredients={ingredientsData}
+                plats={platsData}
             />
         </View>
     );
