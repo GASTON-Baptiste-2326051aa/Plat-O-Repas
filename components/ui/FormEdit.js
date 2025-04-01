@@ -9,10 +9,13 @@ import {
     Platform,
 } from "react-native";
 
-const FormEdit = ({ visible, onClose, onSave, itemToEdit }) => {
+const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit }) => {
     const [name, setName] = useState("");
     const [calories, setCalories] = useState("");
     const [salt, setSalt] = useState("");
+    const [selectedIngredients, setSelectedIngredients] = useState([]);
+    const [selectedPlats, setSelectedPlats] = useState([]);
+
 
     useEffect(() => {
         if (itemToEdit) {
@@ -24,17 +27,22 @@ const FormEdit = ({ visible, onClose, onSave, itemToEdit }) => {
 
     const handleSave = () => {
         if (!name.trim()) {
-            alert("Veuillez entrer un nom");
+            alert("Veuillez entrer un nom.");
             return;
         }
 
         if (!calories.trim()) {
-            alert("Veuillez entrer une valeur pour les calories");
+            alert("Veuillez entrer une valeur pour les calories.");
             return;
         }
 
         if (!salt.trim()) {
-            alert("Veuillez entrer une valeur pour le sel");
+            alert("Veuillez entrer une valeur pour le sel.");
+            return;
+        }
+
+        if (!selectedPlats) {
+            alert("Veuillez sélectionner un plat.");
             return;
         }
 
@@ -43,9 +51,17 @@ const FormEdit = ({ visible, onClose, onSave, itemToEdit }) => {
             name: name.trim(),
             calories: calories.trim(),
             salt: salt.trim(),
-            // Garder la compatibilité avec la structure de données existante
             sel: salt.trim()
         };
+
+        if (currentTab === "Plats") {
+            updatedItem.ingredients = selectedIngredients.map(ing => ing.name);
+
+        }
+
+        if (currentTab === "Repas"){
+            updatedItem.plats = selectedPlats.map(plat => plat.name);
+        }
 
         if (onSave) {
             onSave(updatedItem);
@@ -95,12 +111,6 @@ const FormEdit = ({ visible, onClose, onSave, itemToEdit }) => {
                     />
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                            style={[styles.button, styles.saveButton]}
-                            onPress={handleSave}
-                        >
-                            <Text style={styles.buttonText}>Enregistrer</Text>
-                        </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.button, styles.cancelButton]}
@@ -108,6 +118,13 @@ const FormEdit = ({ visible, onClose, onSave, itemToEdit }) => {
                         >
                             <Text style={styles.buttonText}>Annuler</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.button, styles.saveButton]}
+                            onPress={handleSave}
+                        >
+                            <Text style={styles.buttonText}>Enregistrer</Text>
+                        </TouchableOpacity>
+
                     </View>
                 </View>
             </View>

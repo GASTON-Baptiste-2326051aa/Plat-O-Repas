@@ -20,19 +20,30 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
 
     const handleSave = () => {
         if (!name.trim()) {
-            alert("Veuillez entrer un nom");
+            alert("Veuillez entrer un nom.");
             return;
         }
 
         if (!calories.trim()) {
-            alert("Veuillez entrer une valeur pour les calories");
+            alert("Veuillez entrer une valeur pour les calories.");
             return;
         }
 
         if (!salt.trim()) {
-            alert("Veuillez entrer une valeur pour le sel");
+            alert("Veuillez entrer une valeur pour le sel.");
             return;
         }
+
+        if (!selectedIngredients) {
+            alert("Veuillez sélectionner un ingrédient.");
+            return;
+        }
+
+        if (!selectedPlats) {
+            alert("Veuillez sélectionner un repas.");
+            return;
+        }
+
 
         const newItem = {
             name: name.trim(),
@@ -40,12 +51,10 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
             salt: salt.trim(),
         };
 
-        // Ajouter les ingrédients sélectionnés si on est dans l'onglet "Plats"
         if (currentTab === "Plats") {
             newItem.ingredients = selectedIngredients.map(ing => ing.name);
         }
 
-        // Ajouter les plats sélectionnés si on est dans l'onglet "Repas"
         if (currentTab === "Repas") {
             newItem.plats = selectedPlats.map(plat => plat.name);
         }
@@ -54,7 +63,6 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
             onSave(newItem);
         }
 
-        // Réinitialiser le formulaire
         resetForm();
 
         // Fermer le modal

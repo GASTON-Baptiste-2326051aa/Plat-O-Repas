@@ -4,16 +4,8 @@ import { Feather } from '@expo/vector-icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 
-const INGREDIENTS_DATA = [
+import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from '../../constants/data';
 
-];
-
-export const PLATS_DATA = [
-
-];
-
-export const REPAS_DATA = [
-];
 
 const IngredientPlatsRepasScreen = () => {
     const [activeTab, setActiveTab] = useState('Ingrédients');
@@ -138,8 +130,8 @@ const IngredientPlatsRepasScreen = () => {
         <View style={styles.itemContainer}>
             <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
-                <Text>Sel : {item.sel}g</Text>
                 <Text>Calories : {item.calories}kcal</Text>
+                <Text>Sel : {item.sel}g</Text>
                 {item.ingredients && item.ingredients.length > 0 && (
                     <Text>Ingrédients : {item.ingredients.join(', ')}</Text>
                 )}
