@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import FormEdit from './FormEdit';
@@ -8,7 +8,7 @@ const INGREDIENTS_DATA = [
 
 ];
 
-const PLATS_DATA = [
+export const PLATS_DATA = [
 
 ];
 
@@ -23,6 +23,52 @@ const IngredientPlatsRepasScreen = () => {
     const [ingredientsData, setIngredientsData] = useState(INGREDIENTS_DATA);
     const [platsData, setPlatsData] = useState(PLATS_DATA);
     const [repasData, setRepasData] = useState(REPAS_DATA);
+
+    useEffect(() => {
+        const updatedPlats = platsData.map(plat => {
+            const platSel = plat.ingredients
+                ? plat.ingredients.reduce((total, ingredientName) => {
+                    const ingredient = ingredientsData.find(ing => ing.name === ingredientName);
+                    return total + (ingredient ? parseFloat(ingredient.sel) : 0);
+                }, 0)
+                : 0;
+
+            const platCalories = plat.ingredients
+                ? plat.ingredients.reduce((total, ingredientName) => {
+                    const ingredient = ingredientsData.find(ing => ing.name === ingredientName);
+                    return total + (ingredient ? parseFloat(ingredient.calories) : 0);
+                }, 0)
+                : 0;
+
+            return { ...plat, sel: platSel, calories: platCalories };
+        });
+
+        setPlatsData(updatedPlats);
+    }, [ingredientsData]);
+
+
+    useEffect(() => {
+        const updatedRepas = repasData.map(repas => {
+            const repasSel = repas.plats
+                ? repas.plats.reduce((total, platName) => {
+                    const plat = platsData.find(p => p.name === platName);
+                    return total + (plat ? parseFloat(plat.sel) : 0);
+                }, 0)
+                : 0;
+
+            const repasCalories = repas.plats
+                ? repas.plats.reduce((total, platName) => {
+                    const plat = platsData.find(p => p.name === platName);
+                    return total + (plat ? parseFloat(plat.calories) : 0);
+                }, 0)
+                : 0;
+
+            return { ...repas, sel: repasSel, calories: repasCalories };
+        });
+
+        setRepasData(updatedRepas);
+    }, [platsData]);
+
 
     const handleEdit = (item) => {
         setItemToEdit(item);
@@ -73,9 +119,7 @@ const IngredientPlatsRepasScreen = () => {
                 const newPlat = {
                     id: (platsData.length + 1).toString(),
                     name: newItem.name,
-                    ingredients: newItem.ingredients || [],
-                    sel: newItem.salt,
-                    calories: newItem.calories
+                    ingredients: newItem.ingredients || []
                 };
                 setPlatsData([...platsData, newPlat]);
                 break;
@@ -83,9 +127,7 @@ const IngredientPlatsRepasScreen = () => {
                 const newRepas = {
                     id: (repasData.length + 1).toString(),
                     name: newItem.name,
-                    plats: newItem.plats || [],
-                    sel: newItem.salt,
-                    calories: newItem.calories
+                    plats: newItem.plats || []
                 };
                 setRepasData([...repasData, newRepas]);
                 break;
