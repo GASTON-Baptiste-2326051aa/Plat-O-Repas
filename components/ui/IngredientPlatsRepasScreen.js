@@ -1,52 +1,105 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import FormEdit from './FormEdit'; // Importez le nouveau composant
 
 const INGREDIENTS_DATA = [
-    { id: '1', name: 'Tomate', sel: '2g', calories: '20 kcal' },
-    { id: '2', name: 'Salade', sel: '1g', calories: '15 kcal' },
-    { id: '3', name: 'Ail', sel: '3g', calories: '30 kcal' }
+    { id: '1', name: 'Tomate', sel: '2', calories: '20' },
+    { id: '2', name: 'Salade', sel: '1', calories: '15' },
+    { id: '3', name: 'Ail', sel: '3', calories: '30' }
 ];
 
 const PLATS_DATA = [
-    { id: '1', name: 'Salade de tomates', ingredients: ['Tomate'], sel: '2g', calories: '20 kcal' },
-    { id: '2', name: 'Salade verte', ingredients: ['Salade'], sel: '1g', calories: '15 kcal' }
+    { id: '1', name: 'Salade de tomates', ingredients: ['Tomate'], sel: '2', calories: '20' },
+    { id: '2', name: 'Salade verte', ingredients: ['Salade'], sel: '1', calories: '15' }
 ];
 
-export const REPAS_DATA = [
-    { id: '1', name: 'Déjeuner', plats: ['Salade de tomates'], sel: '2g', calories: '20 kcal' },
-    { id: '2', name: 'Dîner', plats: ['Salade verte'], sel: '1g', calories: '15 kcal' }
+const REPAS_DATA = [
+    { id: '1', name: 'Déjeuner', plats: ['Salade de tomates'], sel: '2', calories: '20' },
+    { id: '2', name: 'Dîner', plats: ['Salade verte'], sel: '1', calories: '15' }
 ];
 
 const IngredientPlatsRepasScreen = () => {
     const [activeTab, setActiveTab] = useState('Ingrédient');
+    const [showEditForm, setShowEditForm] = useState(false);
+    const [itemToEdit, setItemToEdit] = useState(null);
+    const [ingredientsData, setIngredientsData] = useState(INGREDIENTS_DATA);
+    const [platsData, setPlatsData] = useState(PLATS_DATA);
+    const [repasData, setRepasData] = useState(REPAS_DATA);
+
+    const handleEdit = (item) => {
+        setItemToEdit(item);
+        setShowEditForm(true);
+    };
+
+    const handleSaveEdit = (updatedItem) => {
+        switch (activeTab) {
+            case 'Ingrédient':
+                setIngredientsData(
+                    ingredientsData.map(item =>
+                        item.id === updatedItem.id ? updatedItem : item
+                    )
+                );
+                break;
+            case 'Plat':
+                setPlatsData(
+                    platsData.map(item =>
+                        item.id === updatedItem.id ? updatedItem : item
+                    )
+                );
+                break;
+            case 'Repas':
+                setRepasData(
+                    repasData.map(item =>
+                        item.id === updatedItem.id ? updatedItem : item
+                    )
+                );
+                break;
+        }
+
+        setShowEditForm(false);
+        setItemToEdit(null);
+    };
 
     const renderItem = ({ item }) => (
         <View style={styles.itemContainer}>
             <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
-                <Text>Sel : {item.sel}</Text>
-                <Text>Calories : {item.calories}</Text>
+                <Text>Sel : {item.sel}g</Text>
+                <Text>Calories : {item.calories}kcal</Text>
             </View>
-            <TouchableOpacity style={styles.editButton}>
+            <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => handleEdit(item)}
+            >
                 <Feather name="edit" size={24} color="black" />
             </TouchableOpacity>
         </View>
     );
 
-    const renderContent = () => {
-        let data, title;
+    const getDataForActiveTab = () => {
         switch (activeTab) {
             case 'Ingrédient':
-                data = INGREDIENTS_DATA;
+                return ingredientsData;
+            case 'Plat':
+                return platsData;
+            case 'Repas':
+                return repasData;
+            default:
+                return [];
+        }
+    };
+
+    const renderContent = () => {
+        let title;
+        switch (activeTab) {
+            case 'Ingrédient':
                 title = 'Ingrédients';
                 break;
             case 'Plat':
-                data = PLATS_DATA;
                 title = 'Plats';
                 break;
             case 'Repas':
-                data = REPAS_DATA;
                 title = 'Repas';
                 break;
         }
@@ -55,7 +108,7 @@ const IngredientPlatsRepasScreen = () => {
             <View style={styles.contentContainer}>
                 <Text style={styles.titleText}>{title}</Text>
                 <FlatList
-                    data={data}
+                    data={getDataForActiveTab()}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     contentContainerStyle={styles.listContainer}
@@ -67,7 +120,7 @@ const IngredientPlatsRepasScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.tabContainer}>
-                {['Ingrédient', 'Plat', 'Repas'].map(tab => (
+                {['Ingrédients', 'Plats', 'Repas'].map(tab => (
                     <TouchableOpacity
                         key={tab}
                         style={[
@@ -86,6 +139,16 @@ const IngredientPlatsRepasScreen = () => {
                 ))}
             </View>
             {renderContent()}
+
+            <FormEdit
+                visible={showEditForm}
+                onClose={() => {
+                    setShowEditForm(false);
+                    setItemToEdit(null);
+                }}
+                onSave={handleSaveEdit}
+                itemToEdit={itemToEdit}
+            />
         </View>
     );
 };
