@@ -24,32 +24,40 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
             return;
         }
 
-        if (!calories.trim()) {
-            alert("Veuillez entrer une valeur pour les calories.");
+        // Vérification des calories et du sel uniquement pour les ingrédients
+        if (currentTab === "Ingrédients") {
+            if (!calories.trim()) {
+                alert("Veuillez entrer une valeur pour les calories.");
+                return;
+            }
+
+            if (!salt.trim()) {
+                alert("Veuillez entrer une valeur pour le sel.");
+                return;
+            }
+        }
+
+        // Vérification des ingrédients sélectionnés pour les plats
+        if (currentTab === "Plats" && selectedIngredients.length === 0) {
+            alert("Veuillez sélectionner au moins un ingrédient.");
             return;
         }
 
-        if (!salt.trim()) {
-            alert("Veuillez entrer une valeur pour le sel.");
+        // Vérification des plats sélectionnés pour les repas
+        if (currentTab === "Repas" && selectedPlats.length === 0) {
+            alert("Veuillez sélectionner au moins un plat.");
             return;
         }
-
-        if (!selectedIngredients) {
-            alert("Veuillez sélectionner un ingrédient.");
-            return;
-        }
-
-        if (!selectedPlats) {
-            alert("Veuillez sélectionner un repas.");
-            return;
-        }
-
 
         const newItem = {
             name: name.trim(),
-            calories: calories.trim(),
-            salt: salt.trim(),
         };
+
+        // Ajouter les calories et le sel seulement pour les ingrédients
+        if (currentTab === "Ingrédients") {
+            newItem.calories = calories.trim();
+            newItem.salt = salt.trim();
+        }
 
         if (currentTab === "Plats") {
             newItem.ingredients = selectedIngredients.map(ing => ing.name);
@@ -177,23 +185,41 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
                             onChangeText={setName}
                         />
 
-                        <Text style={styles.label}>Quantité de calories (en kcal)</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Calories..."
-                            keyboardType='numeric'
-                            value={calories}
-                            onChangeText={setCalories}
-                        />
+                        {/* Afficher les champs de calories et sel uniquement pour les ingrédients */}
+                        {currentTab === "Ingrédients" && (
+                            <>
+                                <Text style={styles.label}>Quantité de calories (en kcal)</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Calories..."
+                                    keyboardType='numeric'
+                                    value={calories}
+                                    onChangeText={setCalories}
+                                />
 
-                        <Text style={styles.label}>Quantité de sel (en grammes)</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Sel..."
-                            keyboardType='numeric'
-                            value={salt}
-                            onChangeText={setSalt}
-                        />
+                                <Text style={styles.label}>Quantité de sel (en grammes)</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Sel..."
+                                    keyboardType='numeric'
+                                    value={salt}
+                                    onChangeText={setSalt}
+                                />
+                            </>
+                        )}
+
+                        {/* Message informatif pour plats et repas */}
+                        {currentTab === "Plats" && (
+                            <Text style={styles.infoText}>
+                                Les calories et le sel seront calculés automatiquement en fonction des ingrédients sélectionnés.
+                            </Text>
+                        )}
+
+                        {currentTab === "Repas" && (
+                            <Text style={styles.infoText}>
+                                Les calories et le sel seront calculés automatiquement en fonction des plats sélectionnés.
+                            </Text>
+                        )}
 
                         {currentTab === "Plats" && ingredients.length > 0 && (
                             <View style={styles.ingredientsSection}>
@@ -284,6 +310,16 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 1,
         borderColor: "#ddd",
+    },
+    infoText: {
+        fontSize: 14,
+        color: "#777",
+        fontStyle: "italic",
+        marginBottom: 15,
+        textAlign: "center",
+        backgroundColor: "#f0f0f0",
+        padding: 8,
+        borderRadius: 5,
     },
     ingredientsSection: {
         marginBottom: 15,

@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 
 import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from '../../constants/data';
-
 
 const IngredientPlatsRepasScreen = () => {
     const [activeTab, setActiveTab] = useState('Ingrédients');
@@ -16,51 +15,37 @@ const IngredientPlatsRepasScreen = () => {
     const [platsData, setPlatsData] = useState(PLATS_DATA);
     const [repasData, setRepasData] = useState(REPAS_DATA);
 
-    useEffect(() => {
-        const updatedPlats = platsData.map(plat => {
-            const platSel = plat.ingredients
-                ? plat.ingredients.reduce((total, ingredientName) => {
-                    const ingredient = ingredientsData.find(ing => ing.name === ingredientName);
-                    return total + (ingredient ? parseFloat(ingredient.sel) : 0);
-                }, 0)
-                : 0;
+    // Fonction pour calculer les valeurs nutritionnelles d'un plat
+    const calculatePlatNutrition = (platIngredients) => {
+        if (!platIngredients || platIngredients.length === 0) return { sel: 0, calories: 0 };
 
-            const platCalories = plat.ingredients
-                ? plat.ingredients.reduce((total, ingredientName) => {
-                    const ingredient = ingredientsData.find(ing => ing.name === ingredientName);
-                    return total + (ingredient ? parseFloat(ingredient.calories) : 0);
-                }, 0)
-                : 0;
+        return platIngredients.reduce((total, ingredientName) => {
+            const ingredient = ingredientsData.find(ing => ing.name === ingredientName);
+            if (!ingredient) return total;
 
-            return { ...plat, sel: platSel, calories: platCalories };
-        });
+            return {
+                sel: total.sel + (parseFloat(ingredient.sel) || 0),
+                calories: total.calories + (parseFloat(ingredient.calories) || 0)
+            };
+        }, { sel: 0, calories: 0 });
+    };
 
-        setPlatsData(updatedPlats);
-    }, [ingredientsData]);
+    // Fonction pour calculer les valeurs nutritionnelles d'un repas
+    const calculateRepasNutrition = (repasPlats) => {
+        if (!repasPlats || repasPlats.length === 0) return { sel: 0, calories: 0 };
 
+        return repasPlats.reduce((total, platName) => {
+            const plat = platsData.find(p => p.name === platName);
+            if (!plat) return total;
 
-    useEffect(() => {
-        const updatedRepas = repasData.map(repas => {
-            const repasSel = repas.plats
-                ? repas.plats.reduce((total, platName) => {
-                    const plat = platsData.find(p => p.name === platName);
-                    return total + (plat ? parseFloat(plat.sel) : 0);
-                }, 0)
-                : 0;
+            const platNutrition = calculatePlatNutrition(plat.ingredients);
 
-            const repasCalories = repas.plats
-                ? repas.plats.reduce((total, platName) => {
-                    const plat = platsData.find(p => p.name === platName);
-                    return total + (plat ? parseFloat(plat.calories) : 0);
-                }, 0)
-                : 0;
-
-            return { ...repas, sel: repasSel, calories: repasCalories };
-        });
-
-        setRepasData(updatedRepas);
-    }, [platsData]);
-
+            return {
+                sel: total.sel + platNutrition.sel,
+                calories: total.calories + platNutrition.calories
+            };
+        }, { sel: 0, calories: 0 });
+    };
 
     const handleEdit = (item) => {
         setItemToEdit(item);
@@ -126,27 +111,44 @@ const IngredientPlatsRepasScreen = () => {
         }
     };
 
-    const renderItem = ({ item }) => (
-        <View style={styles.itemContainer}>
-            <View style={styles.itemDetails}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text>Calories : {item.calories}kcal</Text>
-                <Text>Sel : {item.sel}g</Text>
-                {item.ingredients && item.ingredients.length > 0 && (
-                    <Text>Ingrédients : {item.ingredients.join(', ')}</Text>
-                )}
-                {item.plats && item.plats.length > 0 && (
-                    <Text>Plats : {item.plats.join(', ')}</Text>
-                )}
+    const renderItem = ({ item }) => {
+        let calories, sel;
+
+        if (activeTab === 'Plats' && item.ingredients) {
+            const nutrition = calculatePlatNutrition(item.ingredients);
+            calories = nutrition.calories.toFixed(1);
+            sel = nutrition.sel.toFixed(1);
+        } else if (activeTab === 'Repas' && item.plats) {
+            const nutrition = calculateRepasNutrition(item.plats);
+            calories = nutrition.calories.toFixed(1);
+            sel = nutrition.sel.toFixed(1);
+        } else {
+            calories = item.calories;
+            sel = item.sel;
+        }
+
+        return (
+            <View style={styles.itemContainer}>
+                <View style={styles.itemDetails}>
+                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text>Calories : {calories}kcal</Text>
+                    <Text>Sel : {sel}g</Text>
+                    {item.ingredients && item.ingredients.length > 0 && (
+                        <Text>Ingrédients : {item.ingredients.join(', ')}</Text>
+                    )}
+                    {item.plats && item.plats.length > 0 && (
+                        <Text>Plats : {item.plats.join(', ')}</Text>
+                    )}
+                </View>
+                <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() => handleEdit(item)}
+                >
+                    <Feather name="edit" size={24} color="black" />
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity
-                style={styles.editButton}
-                onPress={() => handleEdit(item)}
-            >
-                <Feather name="edit" size={24} color="black" />
-            </TouchableOpacity>
-        </View>
-    );
+        );
+    };
 
     const getDataForActiveTab = () => {
         switch (activeTab) {
@@ -227,6 +229,9 @@ const IngredientPlatsRepasScreen = () => {
                 }}
                 onSave={handleSaveEdit}
                 itemToEdit={itemToEdit}
+                currentTab={activeTab}  // Ajout de l'onglet actif
+                ingredients={ingredientsData} // Ajout des ingrédients
+                plats={platsData} // Ajout des plats
             />
 
             <FormAdd
