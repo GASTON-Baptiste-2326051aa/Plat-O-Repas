@@ -13,7 +13,7 @@ const PLATS_DATA = [
     { id: '2', name: 'Salade verte', ingredients: ['Salade'], sel: '1g', calories: '15 kcal' }
 ];
 
-const REPAS_DATA = [
+export const REPAS_DATA = [
     { id: '1', name: 'Déjeuner', plats: ['Salade de tomates'], sel: '2g', calories: '20 kcal' },
     { id: '2', name: 'Dîner', plats: ['Salade verte'], sel: '1g', calories: '15 kcal' }
 ];

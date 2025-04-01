@@ -1,5 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import {REPAS_DATA} from "./IngredientPlatsRepasScreen";
+
+const calculTotal = (key) => {
+    return REPAS_DATA.reduce((total, repas) => {
+        const value = parseFloat(repas[key]);
+        return total + (isNaN(value) ? 0 : value);
+    }, 0);
+};
 
 const Gauge = ({ value, max, unit }) => {
     const percentage = (value / max) * 100;
@@ -13,16 +21,19 @@ const Gauge = ({ value, max, unit }) => {
 };
 
 const GaugeScreen = () => {
+    const totalSel = calculTotal("sel");
+    const totalCalories = calculTotal("calories");
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Taux de sel</Text>
-            <Gauge value={1} max={5} unit="g" />
+            <Gauge value={totalSel} max={5} unit="g" />
             <Text style={styles.recoText}>
                 Il est recommandé de prendre moins de 5g par jour.
             </Text>
 
             <Text style={styles.title}>Taux de calorie</Text>
-            <Gauge value={1700} max={2000} unit="kcal" />
+            <Gauge value={totalCalories} max={2000} unit="kcal" />
             <Text style={styles.recoText}>
                 Il est recommandé de prendre plus de 2000kcal par jour.
             </Text>
