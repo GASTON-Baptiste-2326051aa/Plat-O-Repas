@@ -11,7 +11,7 @@ const calculTotal = (key) => {
 
 const Gauge = ({ value, max, unit }) => {
     const percentage = (value / max) * 100;
-    const gaugeColor = percentage > 80 ? "#ff4d4d" : "#a3a3a3"; // Rouge si plus de 80% du max, sinon gris
+    const gaugeColor = percentage > 80 ? "#ff4d4d" : "#00FF00"; // Rouge si plus de 80% du max, sinon gris
 
 
     return (
