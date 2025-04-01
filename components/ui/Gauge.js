@@ -11,10 +11,12 @@ const calculTotal = (key) => {
 
 const Gauge = ({ value, max, unit }) => {
     const percentage = (value / max) * 100;
+    const gaugeColor = percentage > 80 ? "#ff4d4d" : "#a3a3a3"; // Rouge si plus de 80% du max, sinon gris
+
 
     return (
         <View style={styles.gaugeContainer}>
-            <View style={[styles.gaugeFill, { width: `${percentage}%` }]} />
+            <View style={[styles.gaugeFill, { width: `${percentage}%`, backgroundColor: gaugeColor}]} />
             <Text style={styles.gaugeText}>{value}{unit}</Text>
         </View>
     );
