@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import FormEdit from './FormEdit'; // Importez le nouveau composant
+import FormEdit from './FormEdit';
+import FormAdd from './FormAdd';
 
 const INGREDIENTS_DATA = [
-    { id: '1', name: 'Tomate', sel: '2', calories: '20' },
-    { id: '2', name: 'Salade', sel: '1', calories: '15' },
-    { id: '3', name: 'Ail', sel: '3', calories: '30' }
 ];
 
 const PLATS_DATA = [
-    { id: '1', name: 'Salade de tomates', ingredients: ['Tomate'], sel: '2', calories: '20' },
-    { id: '2', name: 'Salade verte', ingredients: ['Salade'], sel: '1', calories: '15' }
+
 ];
 
 export const REPAS_DATA = [
-    { id: '1', name: 'Déjeuner', plats: ['Salade de tomates'], sel: '2', calories: '20' },
-    { id: '2', name: 'Dîner', plats: ['Salade verte'], sel: '1', calories: '15' }
+
 ];
 
 const IngredientPlatsRepasScreen = () => {
-    const [activeTab, setActiveTab] = useState('Ingrédient');
+    const [activeTab, setActiveTab] = useState('Ingrédients');
     const [showEditForm, setShowEditForm] = useState(false);
+    const [showAddForm, setShowAddForm] = useState(false);
     const [itemToEdit, setItemToEdit] = useState(null);
     const [ingredientsData, setIngredientsData] = useState(INGREDIENTS_DATA);
     const [platsData, setPlatsData] = useState(PLATS_DATA);
@@ -34,14 +31,14 @@ const IngredientPlatsRepasScreen = () => {
 
     const handleSaveEdit = (updatedItem) => {
         switch (activeTab) {
-            case 'Ingrédient':
+            case 'Ingrédients':
                 setIngredientsData(
                     ingredientsData.map(item =>
                         item.id === updatedItem.id ? updatedItem : item
                     )
                 );
                 break;
-            case 'Plat':
+            case 'Plats':
                 setPlatsData(
                     platsData.map(item =>
                         item.id === updatedItem.id ? updatedItem : item
@@ -59,6 +56,40 @@ const IngredientPlatsRepasScreen = () => {
 
         setShowEditForm(false);
         setItemToEdit(null);
+    };
+
+    const handleAddItem = (newItem) => {
+        switch (activeTab) {
+            case 'Ingrédients':
+                const newIngredient = {
+                    id: (ingredientsData.length + 1).toString(),
+                    name: newItem.name,
+                    sel: newItem.salt,
+                    calories: newItem.calories
+                };
+                setIngredientsData([...ingredientsData, newIngredient]);
+                break;
+            case 'Plats':
+                const newPlat = {
+                    id: (platsData.length + 1).toString(),
+                    name: newItem.name,
+                    ingredients: [],
+                    sel: newItem.salt,
+                    calories: newItem.calories
+                };
+                setPlatsData([...platsData, newPlat]);
+                break;
+            case 'Repas':
+                const newRepas = {
+                    id: (repasData.length + 1).toString(),
+                    name: newItem.name,
+                    plats: [],
+                    sel: newItem.salt,
+                    calories: newItem.calories
+                };
+                setRepasData([...repasData, newRepas]);
+                break;
+        }
     };
 
     const renderItem = ({ item }) => (
@@ -79,9 +110,9 @@ const IngredientPlatsRepasScreen = () => {
 
     const getDataForActiveTab = () => {
         switch (activeTab) {
-            case 'Ingrédient':
+            case 'Ingrédients':
                 return ingredientsData;
-            case 'Plat':
+            case 'Plats':
                 return platsData;
             case 'Repas':
                 return repasData;
@@ -93,10 +124,10 @@ const IngredientPlatsRepasScreen = () => {
     const renderContent = () => {
         let title;
         switch (activeTab) {
-            case 'Ingrédient':
+            case 'Ingrédients':
                 title = 'Ingrédients';
                 break;
-            case 'Plat':
+            case 'Plats':
                 title = 'Plats';
                 break;
             case 'Repas':
@@ -106,7 +137,15 @@ const IngredientPlatsRepasScreen = () => {
 
         return (
             <View style={styles.contentContainer}>
-                <Text style={styles.titleText}>{title}</Text>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.titleText}>{title}</Text>
+                    <TouchableOpacity
+                        style={styles.addButton}
+                        onPress={() => setShowAddForm(true)}
+                    >
+                        <Feather name="plus" size={24} color="white" />
+                    </TouchableOpacity>
+                </View>
                 <FlatList
                     data={getDataForActiveTab()}
                     renderItem={renderItem}
@@ -149,6 +188,15 @@ const IngredientPlatsRepasScreen = () => {
                 onSave={handleSaveEdit}
                 itemToEdit={itemToEdit}
             />
+
+            <FormAdd
+                visible={showAddForm}
+                onClose={() => setShowAddForm(false)}
+                onSave={(newItem) => {
+                    handleAddItem(newItem);
+                    setShowAddForm(false);
+                }}
+            />
         </View>
     );
 };
@@ -186,11 +234,29 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
     },
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
     titleText: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10,
         textAlign: 'center',
+    },
+    addButton: {
+        backgroundColor: '#4CAF50',
+        borderRadius: 50,
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
     },
     listContainer: {
         paddingBottom: 10,
