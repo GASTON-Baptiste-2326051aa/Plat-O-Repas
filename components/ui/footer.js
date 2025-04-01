@@ -53,7 +53,6 @@ const Footer = () => {
                     <Icon name="clipboard" size={30} color="#000" />
                 </TouchableOpacity>
             </View>
-
             <TouchableOpacity
                 style={styles.addButton}
                 onPress={() => setShowForm(true)}

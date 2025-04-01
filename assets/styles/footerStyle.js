@@ -20,7 +20,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 10,
-    }
+    },
+    addButton: {
+        position: 'absolute',
+        bottom: 60,
+        left: '50%',
+        transform: [{ translateX: -20 }],
+        backgroundColor: '#3498db',
+        borderRadius: 30,
+        padding: 15,
+    },
 });
 
 export default styles;
