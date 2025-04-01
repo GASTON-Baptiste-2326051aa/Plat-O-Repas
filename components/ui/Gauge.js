@@ -29,9 +29,9 @@ const GaugeScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Taux de sel</Text>
-            <Gauge value={totalSel} max={5} unit="g" />
+            <Gauge value={totalSel} max={20} unit="g" />
             <Text style={styles.recoText}>
-                Il est recommandé de prendre moins de 5g par jour.
+                Il est recommandé de prendre moins de 20g par jour.
             </Text>
 
             <Text style={styles.title}>Taux de calorie</Text>
