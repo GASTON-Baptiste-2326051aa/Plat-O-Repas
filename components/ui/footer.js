@@ -4,11 +4,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as DocumentPicker from 'expo-document-picker';
 import { useNavigation } from '@react-navigation/native';
 import styles from './footerStyle';
-import FormAdd from './FormAdd';
 
 const Footer = () => {
     const [selectedFile, setSelectedFile] = useState(null);
-    const [showForm, setShowForm] = useState(false);
     const navigation = useNavigation();
 
     const handleImport = async () => {
@@ -28,20 +26,9 @@ const Footer = () => {
         }
     };
 
-    const handleFormSave = (item) => {
-        // Ici vous pouvez implémenter la logique pour sauvegarder l'élément
-        console.log('Item sauvegardé:', item);
-        Alert.alert('Élément ajouté', `Nom: ${item.name}\nCalories: ${item.calories} kcal\nSel: ${item.salt} g`);
-    };
-
     return (
         <View style={styles.footer}>
-            <FormAdd
-                visible={showForm}
-                onClose={() => setShowForm(false)}
-                onSave={handleFormSave}
-            />
-
+            {/* Ligne du bas avec 4 boutons */}
             <View style={styles.row}>
                 <TouchableOpacity style={styles.iconButton}>
                     <Icon name="calendar" size={30} color="#000" />
@@ -59,13 +46,6 @@ const Footer = () => {
                     <Icon name="link" size={30} color="#000" />
                 </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-                style={styles.addButton}
-                onPress={() => setShowForm(true)}
-            >
-                <Icon name="add" size={40} color="#fff" />
-            </TouchableOpacity>
         </View>
     );
 };

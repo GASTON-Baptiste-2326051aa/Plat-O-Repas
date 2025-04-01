@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
@@ -9,11 +9,18 @@ import {
     Platform,
 } from "react-native";
 
-
-const FormAdd = ({ visible, onClose, onSave }) => {
+const FormEdit = ({ visible, onClose, onSave, itemToEdit }) => {
     const [name, setName] = useState("");
     const [calories, setCalories] = useState("");
     const [salt, setSalt] = useState("");
+
+    useEffect(() => {
+        if (itemToEdit) {
+            setName(itemToEdit.name || "");
+            setCalories(itemToEdit.calories?.toString() || "");
+            setSalt(itemToEdit.sel?.toString() || itemToEdit.salt?.toString() || "");
+        }
+    }, [itemToEdit, visible]);
 
     const handleSave = () => {
         if (!name.trim()) {
@@ -31,33 +38,25 @@ const FormAdd = ({ visible, onClose, onSave }) => {
             return;
         }
 
-        const newItem = {
+        const updatedItem = {
+            ...itemToEdit,
             name: name.trim(),
             calories: calories.trim(),
-            salt: salt.trim()
+            salt: salt.trim(),
+            // Garder la compatibilité avec la structure de données existante
+            sel: salt.trim()
         };
 
         if (onSave) {
-            onSave(newItem);
+            onSave(updatedItem);
         }
 
-        // Réinitialiser le formulaire
-        setName("");
-        setCalories("");
-        setSalt("");
-
-        // Fermer le modal
         if (onClose) {
             onClose();
         }
     };
 
     const handleCancel = () => {
-        setName("");
-        setCalories("");
-        setSalt("");
-
-        // Fermer le modal
         if (onClose) {
             onClose();
         }
@@ -67,7 +66,7 @@ const FormAdd = ({ visible, onClose, onSave }) => {
         <Modal visible={visible} animationType="slide" transparent={true}>
             <View style={styles.modalOverlay}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Ajouter un élément</Text>
+                    <Text style={styles.modalTitle}>Modifier l'élément</Text>
 
                     <Text style={styles.label}>Nom</Text>
                     <TextInput
@@ -97,10 +96,10 @@ const FormAdd = ({ visible, onClose, onSave }) => {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            style={[styles.button, styles.addButton]}
+                            style={[styles.button, styles.saveButton]}
                             onPress={handleSave}
                         >
-                            <Text style={styles.buttonText}>Ajouter</Text>
+                            <Text style={styles.buttonText}>Enregistrer</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -168,8 +167,8 @@ const styles = StyleSheet.create({
         margin: 5,
         alignItems: "center",
     },
-    addButton: {
-        backgroundColor: "#4CAF50",
+    saveButton: {
+        backgroundColor: "#2196F3",
     },
     cancelButton: {
         backgroundColor: "#f44336",
@@ -180,4 +179,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FormAdd;
+export default FormEdit;
