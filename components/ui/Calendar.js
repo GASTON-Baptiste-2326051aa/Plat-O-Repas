@@ -118,34 +118,3 @@ export function Calendar({ days }) {
         </View>
     );
 }
-
-const extendedStyles = {
-    ...styles,
-    mainContainer: {
-        flex: 1,
-        width: '100%'
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#e0e0e0'
-    },
-    headerTitle: {
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    addButton: {
-        backgroundColor: '#3498db',
-        borderRadius: 20,
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-};
-
-Object.assign(styles, extendedStyles);

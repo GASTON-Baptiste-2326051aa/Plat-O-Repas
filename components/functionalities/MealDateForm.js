@@ -68,7 +68,7 @@ const MealDateForm = ({ visible, onClose }) => {
                             onPress={showDatepicker}
                         >
                             <Text style={styles.dateButtonText}>{formatDate(selectedDate)}</Text>
-                            <Feather name="calendar" size={20} color="#555" />
+                            <Feather name="calendar" size={20} color="#E65100" />
                         </TouchableOpacity>
 
                         {showDatePicker && (
@@ -153,36 +153,47 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 20,
+        borderRadius: 16,
+        padding: 22,
         width: '100%',
         maxWidth: 500,
-        maxHeight: '80%'
+        maxHeight: '80%',
+        borderWidth: 1,
+        borderColor: "#FF9800",
+        shadowColor: "#000",
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 6 },
+        shadowRadius: 12,
+        elevation: 8,
     },
     modalTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 22,
+        fontWeight: '600',
         marginBottom: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: '#FF6B00'
     },
     label: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: '500',
         marginBottom: 8,
-        marginTop: 12
+        marginTop: 12,
+        color: '#E65100'
     },
     dateButton: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
+        borderColor: '#FFB74D',
+        borderRadius: 10,
         padding: 12,
-        marginBottom: 15
+        marginBottom: 15,
+        backgroundColor: '#FFFFFF'
     },
     dateButtonText: {
-        fontSize: 16
+        fontSize: 16,
+        color: '#E65100'
     },
     optionsContainer: {
         flexDirection: 'row',
@@ -191,42 +202,44 @@ const styles = StyleSheet.create({
     },
     optionButton: {
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
+        borderColor: '#FFB74D',
+        borderRadius: 10,
         padding: 10,
-        margin: 5
+        margin: 5,
+        backgroundColor: '#FFFFFF'
     },
     selectedOption: {
-        backgroundColor: '#3498db',
-        borderColor: '#3498db'
+        backgroundColor: '#FF9800',
+        borderColor: '#FF9800'
     },
     optionText: {
-        color: '#333'
+        color: '#E65100'
     },
     selectedOptionText: {
-        color: 'white'
+        color: 'white',
+        fontWeight: '600'
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 20
+        marginTop: 15
     },
     button: {
         flex: 1,
-        padding: 12,
-        borderRadius: 5,
+        padding: 14,
+        borderRadius: 10,
         alignItems: 'center',
         marginHorizontal: 5
     },
     cancelButton: {
-        backgroundColor: '#ccc'
+        backgroundColor: '#E0E0E0'
     },
     addButton: {
-        backgroundColor: '#3498db'
+        backgroundColor: '#FF9800'
     },
     buttonText: {
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: '600'
     }
 });
 

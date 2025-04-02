@@ -1,5 +1,5 @@
-import React, {useState, useContext, createContext} from "react";
-import {Text, View} from "react-native";
+import React, {useState, createContext} from "react";
+import {View} from "react-native";
 import Footer from "../../components/ui/footer";
 import IngredientPlatsRepasScreen from "../../components/ui/IngredientPlatsRepasScreen";
 import {createStackNavigator} from '@react-navigation/stack';
@@ -7,7 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from "../../constants/data";
 import {Calendar} from "../../components/ui/Calendar.js";
 import GaugeScreen from "../../components/ui/Gauge";
-import {index as styles} from "../../assets/style/style.js";
+import {index as styles} from "../../assets/styles/style.js";
 
 // Create data context
 export const DataContext = createContext();
@@ -15,7 +15,6 @@ export const DataContext = createContext();
 const Stack = createStackNavigator();
 
 export default function Index() {
-    // Centralized state management
     const [ingredientsData, setIngredientsData] = useState(INGREDIENTS_DATA || []);
     const [platsData, setPlatsData] = useState(PLATS_DATA || []);
     const [repasData, setRepasData] = useState(REPAS_DATA || []);
@@ -57,7 +56,6 @@ export default function Index() {
         return acc;
     }, []);
 
-    // Create context value with data and setter functions
     const contextValue = {
         ingredientsData,
         setIngredientsData,
