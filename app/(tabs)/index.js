@@ -7,6 +7,10 @@ import { StyleSheet } from "react-native";
 const Stack = createStackNavigator();
 import data from "../../constants/data.json";
 import {Calendar} from "./Calendar.js";
+import {index} from "../../assets/style/style.js";
+import { View, Text } from "react-native";
+
+import data from "../../constants/data.json";
 
 export default function Index() {
     const days = data.day || [];
@@ -56,10 +60,5 @@ export default function Index() {
             <IngredientPlatsRepasScreen></IngredientPlatsRepasScreen>
             <Footer />
         </View>
-            <Stack.Navigator initialRouteName="Homepage" >
-                {/* Définir les écrans dans le stack */}
-                <Stack.Screen name="Homepage" component={Homepage} />
-                <Stack.Screen name="GaugeScreen" component={GaugeScreen} />
-            </Stack.Navigator>
     );
 }
