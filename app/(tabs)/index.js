@@ -3,17 +3,17 @@ import {Text, View} from "react-native";
 import Footer from "../../components/ui/footer";
 import IngredientPlatsRepasScreen from "../../components/ui/IngredientPlatsRepasScreen";
 import {createStackNavigator} from '@react-navigation/stack';
-import data from "../../constants/data.json";
+
+import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from "../../constants/data";
 import {Calendar} from "../../components/ui/Calendar.js";
 import {index as styles} from "../../assets/style/style.js";
 
 const Stack = createStackNavigator();
 
 export default function Index() {
-    const days = data.day || [];
-    const plats = data.plats || [];
-    const ingredients = data.ingredients || [];
-
+    const days = REPAS_DATA || [];
+    const plats = PLATS_DATA || [];
+    const ingredients = INGREDIENTS_DATA || [];
     const [activeTab, setActiveTab] = useState(1);
 
     function formatDate(inputDate) {

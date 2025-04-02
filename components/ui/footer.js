@@ -28,7 +28,6 @@ const Footer = ({setActiveTab}) => {
     };
 
     const handleFormSave = (item) => {
-        // Ici vous pouvez implémenter la logique pour sauvegarder l'élément
         console.log('Item sauvegardé:', item);
         Alert.alert('Élément ajouté', `Nom: ${item.name}\nCalories: ${item.calories} kcal\nSel: ${item.salt} g`);
     };
