@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, View, TouchableOpacity } from "react-native";
+import { Feather } from '@expo/vector-icons';
 import styles from "../../assets/styles/CalendarStyle";
-import { DataContext } from '../../app/(tabs)/index'; // Import the context
+import { DataContext } from '../../app/(tabs)/index';
+import MealDateForm from "../functionalities/MealDateForm";
 
 export function Calendar({ days }) {
     const [calendarData, setCalendarData] = useState([]);
-
+    const [showAddForm, setShowAddForm] = useState(false);
     const { repasData, platsData } = useContext(DataContext);
 
     useEffect(() => {
@@ -13,6 +15,7 @@ export function Calendar({ days }) {
             const data = [];
             const today = new Date();
 
+            // Créer le tableau de dates pour la semaine
             for (let i = 0; i < 7; i++) {
                 const currentDate = new Date(today);
                 currentDate.setDate(today.getDate() + i);
@@ -23,23 +26,22 @@ export function Calendar({ days }) {
                     month: 'long'
                 });
 
-                const dayRepas = [];
-                if (repasData && repasData.length > 0) {
-                    const numberOfMeals = Math.floor(Math.random() * 3) + 1;
-
-                    for (let j = 0; j < numberOfMeals; j++) {
-                        const randomIndex = Math.floor(Math.random() * repasData.length);
-                        const selectedRepas = repasData[randomIndex];
-
-                        if (!dayRepas.some(repas => repas.id === selectedRepas.id)) {
-                            dayRepas.push({
-                                id: selectedRepas.id,
-                                name: selectedRepas.name,
-                                plats: selectedRepas.plats
-                            });
-                        }
-                    }
-                }
+                // Trouver les repas pour cette date
+                const dayRepas = repasData
+                    .filter(repas => {
+                        const repasDate = new Date(repas.date);
+                        return repasDate.toDateString() === currentDate.toDateString();
+                    })
+                    .map(repas => {
+                        // Trouver les détails du plat
+                        const plat = platsData.find(p => p.id === repas.plat);
+                        return {
+                            id: repas.id,
+                            name: repas.name, // Type de repas (déjeuner, dîner, etc.)
+                            platName: plat ? plat.name : "Plat inconnu",
+                            plats: plat ? [plat.name] : []
+                        };
+                    });
 
                 data.push({
                     date: dateString,
@@ -52,7 +54,7 @@ export function Calendar({ days }) {
         };
 
         setCalendarData(generateCalendarData());
-    }, [repasData]);
+    }, [repasData, platsData]);
 
     const renderMeal = (repas) => {
         return (
@@ -76,26 +78,74 @@ export function Calendar({ days }) {
     }
 
     return (
-        <FlatList
-            data={calendarData}
-            keyExtractor={(item) => item.id}
-            renderItem={({item}) => (
-                <View style={styles.dayContainer}>
-                    <Text style={styles.dateText}>{item.date}</Text>
-                    <View style={styles.repasListContainer}>
-                        {item.repas && item.repas.length > 0 ? (
-                            item.repas.map((repas, index) => (
-                                <View key={index}>
-                                    {renderMeal(repas)}
-                                </View>
-                            ))
-                        ) : (
-                            <Text style={styles.emptyText}>Aucun repas prévu</Text>
-                        )}
+        <View style={styles.mainContainer}>
+            <View style={styles.headerContainer}>
+                <Text style={styles.headerTitle}>Calendrier des repas</Text>
+                <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={() => setShowAddForm(true)}
+                >
+                    <Feather name="plus" size={24} color="white" />
+                </TouchableOpacity>
+            </View>
+
+            <FlatList
+                data={calendarData}
+                keyExtractor={(item) => item.id}
+                renderItem={({item}) => (
+                    <View style={styles.dayContainer}>
+                        <Text style={styles.dateText}>{item.date}</Text>
+                        <View style={styles.repasListContainer}>
+                            {item.repas && item.repas.length > 0 ? (
+                                item.repas.map((repas, index) => (
+                                    <View key={index}>
+                                        {renderMeal(repas)}
+                                    </View>
+                                ))
+                            ) : (
+                                <Text style={styles.emptyText}>Aucun repas prévu</Text>
+                            )}
+                        </View>
                     </View>
-                </View>
-            )}
-            contentContainerStyle={styles.listContainer}
-        />
+                )}
+                contentContainerStyle={styles.listContainer}
+            />
+
+            <MealDateForm
+                visible={showAddForm}
+                onClose={() => setShowAddForm(false)}
+            />
+        </View>
     );
 }
+
+const extendedStyles = {
+    ...styles,
+    mainContainer: {
+        flex: 1,
+        width: '100%'
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#e0e0e0'
+    },
+    headerTitle: {
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    addButton: {
+        backgroundColor: '#3498db',
+        borderRadius: 20,
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+};
+
+Object.assign(styles, extendedStyles);
