@@ -1,21 +1,20 @@
-import React from "react";
-import { createStackNavigator } from '@react-navigation/stack';
-import Homepage from "../../components/ui/homepage";  // Assurez-vous du chemin
-import GaugeScreen from "../../components/ui/Gauge";  // Assurez-vous du chemin
-import { StyleSheet } from "react-native";
+import React, {useState} from "react";
+import {Text, View} from "react-native";
+import Footer from "../../components/ui/footer";
+import IngredientPlatsRepasScreen from "../../components/ui/IngredientPlatsRepasScreen";
+import {createStackNavigator} from '@react-navigation/stack';
+import data from "../../constants/data.json";
+import {Calendar} from "../../components/ui/Calendar.js";
+import {index as styles} from "../../assets/style/style.js";
 
 const Stack = createStackNavigator();
-import data from "../../constants/data.json";
-import {Calendar} from "./Calendar.js";
-import {index} from "../../assets/style/style.js";
-import { View, Text } from "react-native";
-
-import data from "../../constants/data.json";
 
 export default function Index() {
     const days = data.day || [];
     const plats = data.plats || [];
     const ingredients = data.ingredients || [];
+
+    const [activeTab, setActiveTab] = useState(1);
 
     function formatDate(inputDate) {
         const date = new Date(inputDate);
@@ -54,11 +53,13 @@ export default function Index() {
     }, []);
 
     return (
-        <View style={index.container}>
-            <Text style={index.text}>Bienvenue dans l'application</Text>
-            <Calendar day={days} />
-            <IngredientPlatsRepasScreen></IngredientPlatsRepasScreen>
-            <Footer />
+        <View style={styles.container}>
+            <View style={styles.contentContainer}>
+                {activeTab === 0 && <Calendar days={daysWithPlats}/>}
+                {activeTab === 1 && <IngredientPlatsRepasScreen/>}
+                {activeTab === 2 && <Text>Contenu de l'onglet Import</Text>}
+            </View>
+            <Footer setActiveTab={setActiveTab}/>
         </View>
     );
 }

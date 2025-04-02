@@ -14,6 +14,14 @@ export const index = StyleSheet.create({
         color: "#333",
         marginBottom: 20,
     },
+    content: {
+        flex: 1,
+        marginBottom: 60,
+    },
+    contentContainer: {
+        flex: 1,
+        marginBottom: 60,
+    },
 });
 
 export const calendar = StyleSheet.create({
@@ -50,5 +58,50 @@ export const calendar = StyleSheet.create({
     ingredientText: {
         fontSize: 14,
         color: "#999",
+    },
+});
+
+export const footer = StyleSheet.create({
+    footer: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: '#fff',
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+    },
+    iconButton: {
+        padding: 10,
+    },
+    addButton: {
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
+        backgroundColor: '#000',
+        borderRadius: 50,
+        padding: 10,
+    },
+    tabContainer: {
+        flexDirection: "row",
+        borderBottomWidth: 1,
+        borderBottomColor: "#ccc",
+    },
+    tab: {
+        flex: 1,
+        padding: 16,
+        alignItems: "center",
+    },
+    activeTab: {
+        borderBottomWidth: 2,
+        borderBottomColor: "#000",
+    },
+    tabText: {
+        fontSize: 16,
+    },
+    contentContainer: {
+        padding: 16,
     },
 });

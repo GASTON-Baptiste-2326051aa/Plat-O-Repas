@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Alert } from 'react-native';
+import React, {useState} from 'react';
+import {Alert, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as DocumentPicker from 'expo-document-picker';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import styles from './../../assets/styles/footerStyle';
-import FormAdd from './FormAdd';
 
-const Footer = () => {
+const Footer = ({setActiveTab}) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const navigation = useNavigation();
@@ -36,18 +35,23 @@ const Footer = () => {
 
     return (
         <View style={styles.footer}>
-
             <View style={styles.row}>
-                <TouchableOpacity style={styles.iconButton}>
+                <TouchableOpacity style={styles.iconButton} onPress={() => setActiveTab(0)}>
                     <Icon name="calendar" size={30} color="#000" />
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.iconButton}
-                    onPress={() => navigation.navigate('GaugeScreen')}
-                >
+                <TouchableOpacity style={styles.iconButton} onPress={() => setActiveTab(1)}>
                     <Icon name="clipboard" size={30} color="#000" />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.iconButton} onPress={handleImport}>
+                    <Icon name="download" size={30} color="#000"/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconButton} onPress={() => setActiveTab(2)}>
+                    <Icon name="link" size={30} color="#000"/>
+                </TouchableOpacity>
             </View>
+            <TouchableOpacity style={styles.addButton}>
+                <Icon name="add" size={40} color="#fff"/>
+            </TouchableOpacity>
         </View>
     );
 };
