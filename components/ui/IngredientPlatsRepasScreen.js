@@ -49,41 +49,10 @@ const IngredientPlatsRepasScreen = () => {
         }, { sel: 0, calories: 0 });
     };
 
-    // Nouvelle fonction pour gérer la suppression d'un élément
     const handleDelete = (item) => {
-        // Vérifier si l'élément est utilisé dans un autre onglet
-        let itemInUse = false;
-        let message = "";
-
-        if (activeTab === 'Ingrédients') {
-            // Vérifier si l'ingrédient est utilisé dans un plat
-            const usedInPlats = platsData.some(plat =>
-                plat.ingredients && plat.ingredients.includes(item.name)
-            );
-            if (usedInPlats) {
-                itemInUse = true;
-                message = "Cet ingrédient est utilisé dans un ou plusieurs plats. Impossible de le supprimer.";
-            }
-        } else if (activeTab === 'Plats') {
-            // Vérifier si le plat est utilisé dans un repas
-            const usedInRepas = repasData.some(repas =>
-                repas.plats && repas.plats.includes(item.name)
-            );
-            if (usedInRepas) {
-                itemInUse = true;
-                message = "Ce plat est utilisé dans un ou plusieurs repas. Impossible de le supprimer.";
-            }
-        }
-
-        if (itemInUse) {
-            Alert.alert("Suppression impossible", message);
-            return;
-        }
-
-        // Afficher une confirmation avant de supprimer
         Alert.alert(
             "Confirmation",
-            `Êtes-vous sûr de vouloir supprimer "${item.name}" ?`,
+            `Êtes-vous sûr de vouloir supprimer cet élément : ${item.name} ?`,
             [
                 {
                     text: "Annuler",
@@ -91,26 +60,30 @@ const IngredientPlatsRepasScreen = () => {
                 },
                 {
                     text: "Supprimer",
-                    style: "destructive",
                     onPress: () => {
-                        // Supprimer l'élément sélectionné
                         switch (activeTab) {
                             case 'Ingrédients':
-                                setIngredientsData(ingredientsData.filter(ing => ing.id !== item.id));
+                                setIngredientsData(
+                                    ingredientsData.filter(ing => ing.id !== item.id)
+                                );
                                 break;
                             case 'Plats':
-                                setPlatsData(platsData.filter(plat => plat.id !== item.id));
+                                setPlatsData(
+                                    platsData.filter(plat => plat.id !== item.id)
+                                );
                                 break;
                             case 'Repas':
-                                setRepasData(repasData.filter(repas => repas.id !== item.id));
+                                setRepasData(
+                                    repasData.filter(repas => repas.id !== item.id)
+                                );
                                 break;
                         }
-                    }
+                    },
+                    style: "destructive"
                 }
             ]
         );
     };
-
     const handleEdit = (item) => {
         // Code existant inchangé
         setItemToEdit(item);

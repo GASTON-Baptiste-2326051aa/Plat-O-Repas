@@ -38,12 +38,6 @@ const Footer = () => {
                 >
                     <Icon name="clipboard" size={30} color="#000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton} onPress={handleImport}>
-                    <Icon name="download" size={30} color="#000" />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton}>
-                    <Icon name="link" size={30} color="#000" />
-                </TouchableOpacity>
             </View>
         </View>
     );
