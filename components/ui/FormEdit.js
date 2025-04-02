@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
+import styles from "./FormStyle";
 import {
     View,
     Text,
     TextInput,
     TouchableOpacity,
     Modal,
-    StyleSheet,
     FlatList,
     ScrollView,
 } from "react-native";
@@ -47,7 +47,6 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
             return;
         }
 
-        // Vérification des calories et sel uniquement pour les ingrédients
         if (currentTab === "Ingrédients") {
             if (!calories.trim()) {
                 alert("Veuillez entrer une valeur pour les calories.");
@@ -60,13 +59,11 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
             }
         }
 
-        // Vérification des ingrédients pour les plats
         if (currentTab === "Plats" && selectedIngredients.length === 0) {
             alert("Veuillez sélectionner au moins un ingrédient.");
             return;
         }
 
-        // Vérification des plats pour les repas
         if (currentTab === "Repas" && selectedPlats.length === 0) {
             alert("Veuillez sélectionner au moins un plat.");
             return;
@@ -77,19 +74,17 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
             name: name.trim(),
         };
 
-        // Mettre à jour calories et sel seulement pour les ingrédients
         if (currentTab === "Ingrédients") {
             updatedItem.calories = calories.trim();
             updatedItem.salt = salt.trim();
             updatedItem.sel = salt.trim();
         }
 
-        // Mettre à jour les ingrédients pour les plats
         if (currentTab === "Plats") {
             updatedItem.ingredients = selectedIngredients.map(ing => ing.name);
         }
 
-        // Mettre à jour les plats pour les repas
+
         if (currentTab === "Repas") {
             updatedItem.plats = selectedPlats.map(plat => plat.name);
         }
@@ -279,106 +274,5 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
     );
 };
 
-const styles = StyleSheet.create({
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    modalContainer: {
-        width: "85%",
-        maxHeight: "80%",
-        backgroundColor: "#f8f8f8",
-        padding: 20,
-        borderRadius: 10,
-        shadowColor: "#000",
-        shadowOpacity: 0.25,
-        shadowOffset: { width: 0, height: 4 },
-        shadowRadius: 10,
-        elevation: 5,
-    },
-    modalTitle: {
-        fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "center",
-        marginBottom: 15,
-        color: "#333",
-    },
-    label: {
-        fontSize: 14,
-        fontWeight: "500",
-        marginBottom: 5,
-        color: "#555",
-    },
-    input: {
-        width: "100%",
-        backgroundColor: "#fff",
-        padding: 10,
-        marginBottom: 15,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: "#ddd",
-    },
-    infoText: {
-        fontSize: 14,
-        color: "#777",
-        fontStyle: "italic",
-        marginBottom: 15,
-        textAlign: "center",
-        backgroundColor: "#f0f0f0",
-        padding: 8,
-        borderRadius: 5,
-    },
-    ingredientsSection: {
-        marginBottom: 15,
-    },
-    ingredientsList: {
-        maxHeight: 200,
-    },
-    ingredientItem: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        padding: 10,
-        borderWidth: 1,
-        borderColor: "#ddd",
-        borderRadius: 5,
-        marginBottom: 5,
-        backgroundColor: "#fff",
-    },
-    selectedIngredientItem: {
-        backgroundColor: "#4CAF50",
-        borderColor: "#4CAF50",
-    },
-    ingredientName: {
-        fontSize: 14,
-    },
-    selectedIngredientText: {
-        color: "#fff",
-        fontWeight: "bold",
-    },
-    buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 10,
-    },
-    button: {
-        padding: 12,
-        borderRadius: 5,
-        flex: 1,
-        margin: 5,
-        alignItems: "center",
-    },
-    saveButton: {
-        backgroundColor: "#4CAF50",
-    },
-    cancelButton: {
-        backgroundColor: "#f44336",
-    },
-    buttonText: {
-        color: "#fff",
-        fontWeight: "bold",
-    },
-});
 
 export default FormEdit;
