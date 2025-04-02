@@ -1,10 +1,16 @@
 import { StyleSheet } from 'react-native';
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FFF8F2",
+    },
+    contentContainer: {
+        flex: 1, // Utilise tout l’espace vertical disponible
+        paddingHorizontal: 10,
+    },
+    listContainer: {
+        flexGrow: 1, // La liste prend tout l'espace restant
     },
     tabContainer: {
         flexDirection: 'row',
@@ -33,21 +39,19 @@ const styles = StyleSheet.create({
         color: '#FF6B00',
         fontWeight: 'bold',
     },
-    contentContainer: {
-        flex: 1,
-        padding: 10,
-    },
+
     headerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: 5,
     },
     titleText: {
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
         color: "#FF6B00",
+        marginBottom: 5,
     },
     addButton: {
         backgroundColor: '#FF9800',
@@ -61,9 +65,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 2,
-    },
-    listContainer: {
-        paddingBottom: 10,
     },
     itemContainer: {
         flexDirection: 'row',

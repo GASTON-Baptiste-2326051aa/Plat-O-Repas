@@ -1,10 +1,8 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#FFF8F2',
         padding: 20,
     },
@@ -13,7 +11,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#FF6B00',
         textAlign: 'center',
-        marginBottom: 40,
+        marginBottom: 10,
+    },
+    scrollContent: {
+        flexGrow: 1,
     },
 });
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
-import styles from "./IngredientPlatsRepasScreenStyle";
+import styles from "../../assets/styles/IngredientPlatsRepasScreenStyle";
 
 import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from '../../constants/data';
 
@@ -16,9 +16,7 @@ const IngredientPlatsRepasScreen = () => {
     const [platsData, setPlatsData] = useState(PLATS_DATA);
     const [repasData, setRepasData] = useState(REPAS_DATA);
 
-    // Fonction pour calculer les valeurs nutritionnelles d'un plat
     const calculatePlatNutrition = (platIngredients) => {
-        // Code existant inchangé
         if (!platIngredients || platIngredients.length === 0) return { sel: 0, calories: 0 };
 
         return platIngredients.reduce((total, ingredientName) => {
@@ -32,9 +30,7 @@ const IngredientPlatsRepasScreen = () => {
         }, { sel: 0, calories: 0 });
     };
 
-    // Fonction pour calculer les valeurs nutritionnelles d'un repas
     const calculateRepasNutrition = (repasPlats) => {
-        // Code existant inchangé
         if (!repasPlats || repasPlats.length === 0) return { sel: 0, calories: 0 };
 
         return repasPlats.reduce((total, platName) => {
@@ -85,6 +81,7 @@ const IngredientPlatsRepasScreen = () => {
             ]
         );
     };
+
     const handleEdit = (item) => {
         setItemToEdit(item);
         setShowEditForm(true);
@@ -120,9 +117,16 @@ const IngredientPlatsRepasScreen = () => {
     };
 
     const handleAddItem = (newItem) => {
-        // Code existant inchangé
         switch (activeTab) {
             case 'Ingrédients':
+                if (parseFloat(newItem.calories) > 300) {
+                    alert("Les calories doivent être inférieures ou égales à 300.");
+                    return;
+                }
+                if (parseFloat(newItem.salt) > 1) {
+                    alert("Le sel doit être inférieur ou égal à 1g.");
+                    return;
+                }
                 const newIngredient = {
                     id: (ingredientsData.length + 1).toString(),
                     name: newItem.name,
@@ -137,6 +141,11 @@ const IngredientPlatsRepasScreen = () => {
                     name: newItem.name,
                     ingredients: newItem.ingredients || []
                 };
+                const platNutrition = calculatePlatNutrition(newPlat.ingredients);
+                if (platNutrition.calories > 800 || platNutrition.sel > 5) {
+                    alert("Les valeurs nutritionnelles dépassent les limites (800 calories, 5g de sel).");
+                    return;
+                }
                 setPlatsData([...platsData, newPlat]);
                 break;
             case 'Repas':
@@ -145,6 +154,11 @@ const IngredientPlatsRepasScreen = () => {
                     name: newItem.name,
                     plats: newItem.plats || []
                 };
+                const repasNutrition = calculateRepasNutrition(newRepas.plats);
+                if (repasNutrition.calories > 1500 || repasNutrition.sel > 10) {
+                    alert("Les valeurs nutritionnelles dépassent les limites (1500 calories, 10g de sel).");
+                    return;
+                }
                 setRepasData([...repasData, newRepas]);
                 break;
         }
@@ -198,7 +212,6 @@ const IngredientPlatsRepasScreen = () => {
     };
 
     const getDataForActiveTab = () => {
-        // Code existant inchangé
         switch (activeTab) {
             case 'Ingrédients':
                 return ingredientsData;
@@ -212,7 +225,6 @@ const IngredientPlatsRepasScreen = () => {
     };
 
     const renderContent = () => {
-        // Code existant inchangé
         let title;
         switch (activeTab) {
             case 'Ingrédients':
@@ -237,18 +249,22 @@ const IngredientPlatsRepasScreen = () => {
                         <Feather name="plus" size={24} color="white" />
                     </TouchableOpacity>
                 </View>
-                <FlatList
-                    data={getDataForActiveTab()}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    contentContainerStyle={styles.listContainer}
-                />
+                <ScrollView style={styles.container} nestedScrollEnabled={true} scrollEnabled={true}>
+                    <FlatList
+                        data={getDataForActiveTab()}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id}
+                        contentContainerStyle={styles.listContainer}
+                        scrollEnabled={true}
+                        nestedScrollEnabled={true}
+                    />
+                </ScrollView>
             </View>
         );
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container} nestedScrollEnabled={true} >
             <View style={styles.tabContainer}>
                 {['Ingrédients', 'Plats', 'Repas'].map(tab => (
                     <TouchableOpacity
@@ -294,9 +310,8 @@ const IngredientPlatsRepasScreen = () => {
                 ingredients={ingredientsData}
                 plats={platsData}
             />
-        </View>
+        </ScrollView>
     );
 };
-
 
 export default IngredientPlatsRepasScreen;

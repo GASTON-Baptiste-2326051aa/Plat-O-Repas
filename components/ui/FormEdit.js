@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./FormStyle";
+import styles from "../../assets/styles/FormStyle";
 import {
     View,
     Text,
@@ -48,13 +48,13 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
         }
 
         if (currentTab === "Ingrédients") {
-            if (!calories.trim()) {
-                alert("Veuillez entrer une valeur pour les calories.");
+            if (!calories.trim() || parseFloat(calories) > 300) {
+                alert("Veuillez entrer une valeur pour les calories (max 300).");
                 return;
             }
 
-            if (!salt.trim()) {
-                alert("Veuillez entrer une valeur pour le sel.");
+            if (!salt.trim() || parseFloat(salt) > 1) {
+                alert("Veuillez entrer une valeur pour le sel (max 1g).");
                 return;
             }
         }
@@ -82,11 +82,20 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
 
         if (currentTab === "Plats") {
             updatedItem.ingredients = selectedIngredients.map(ing => ing.name);
+            const nutrition = calculatePlatNutrition(updatedItem.ingredients);
+            if (nutrition.calories > 800 || nutrition.sel > 5) {
+                alert("Les valeurs nutritionnelles dépassent les limites (800 calories, 5g de sel).");
+                return;
+            }
         }
-
 
         if (currentTab === "Repas") {
             updatedItem.plats = selectedPlats.map(plat => plat.name);
+            const nutrition = calculateRepasNutrition(updatedItem.plats);
+            if (nutrition.calories > 1500 || nutrition.sel > 10) {
+                alert("Les valeurs nutritionnelles dépassent les limites (1500 calories, 10g de sel).");
+                return;
+            }
         }
 
         if (onSave) {
@@ -232,7 +241,7 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
                                     renderItem={renderIngredientItem}
                                     keyExtractor={item => item.id}
                                     style={styles.ingredientsList}
-                                    scrollEnabled={false}
+                                    scrollEnabled={true}
                                     nestedScrollEnabled={true}
                                 />
                             </View>
@@ -247,7 +256,7 @@ const FormEdit = ({ visible, onClose, currentTab, onSave, itemToEdit, ingredient
                                     renderItem={renderPlatItem}
                                     keyExtractor={item => item.id}
                                     style={styles.ingredientsList}
-                                    scrollEnabled={false}
+                                    scrollEnabled={true}
                                     nestedScrollEnabled={true}
                                 />
                             </View>

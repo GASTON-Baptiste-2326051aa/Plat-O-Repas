@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./FormStyle";
+import styles from "../../assets/styles/FormStyle";
 import {
     View,
     Text,
@@ -23,26 +23,23 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
             return;
         }
 
-        // Vérification des calories et du sel uniquement pour les ingrédients
         if (currentTab === "Ingrédients") {
-            if (!calories.trim()) {
-                alert("Veuillez entrer une valeur pour les calories.");
+            if (!calories.trim() || parseFloat(calories) > 300) {
+                alert("Veuillez entrer une valeur pour les calories (max 300).");
                 return;
             }
 
-            if (!salt.trim()) {
-                alert("Veuillez entrer une valeur pour le sel.");
+            if (!salt.trim() || parseFloat(salt) > 1) {
+                alert("Veuillez entrer une valeur pour le sel (max 1g).");
                 return;
             }
         }
 
-        // Vérification des ingrédients sélectionnés pour les plats
         if (currentTab === "Plats" && selectedIngredients.length === 0) {
             alert("Veuillez sélectionner au moins un ingrédient.");
             return;
         }
 
-        // Vérification des plats sélectionnés pour les repas
         if (currentTab === "Repas" && selectedPlats.length === 0) {
             alert("Veuillez sélectionner au moins un plat.");
             return;
@@ -52,7 +49,6 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
             name: name.trim(),
         };
 
-        // Ajouter les calories et le sel seulement pour les ingrédients
         if (currentTab === "Ingrédients") {
             newItem.calories = calories.trim();
             newItem.salt = salt.trim();
@@ -71,11 +67,6 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
         }
 
         resetForm();
-
-        // Fermer le modal
-        if (onClose) {
-            onClose();
-        }
     };
 
     const handleCancel = () => {
@@ -228,7 +219,7 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
                                     renderItem={renderIngredientItem}
                                     keyExtractor={item => item.id}
                                     style={styles.ingredientsList}
-                                    scrollEnabled={false}
+                                    scrollEnabled={true}
                                     nestedScrollEnabled={true}
                                 />
                             </View>
@@ -242,7 +233,7 @@ const FormAdd = ({ visible, onClose, onSave, currentTab, ingredients = [], plats
                                     renderItem={renderPlatItem}
                                     keyExtractor={item => item.id}
                                     style={styles.ingredientsList}
-                                    scrollEnabled={false}
+                                    scrollEnabled={true}
                                     nestedScrollEnabled={true}
                                 />
                             </View>

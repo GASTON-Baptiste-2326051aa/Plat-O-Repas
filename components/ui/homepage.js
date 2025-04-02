@@ -1,18 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import Footer from "./footer";
 import IngredientPlatsRepasScreen from "./IngredientPlatsRepasScreen";
-import styles from "./homepageStyle";
+import styles from "../../assets/styles/homepageStyle";
 
 const Homepage = () => {
-    return(
+    return (
         <View style={styles.container}>
-            <Text style={styles.text}>Bienvenue dans l'application</Text>
-            <IngredientPlatsRepasScreen></IngredientPlatsRepasScreen>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                <Text style={styles.text}>Bienvenue dans l'application</Text>
+                <IngredientPlatsRepasScreen />
+            </ScrollView>
             <Footer />
         </View>
     );
-}
-
+};
 
 export default Homepage;

@@ -36,11 +36,6 @@ const Footer = () => {
 
     return (
         <View style={styles.footer}>
-            <FormAdd
-                visible={showForm}
-                onClose={() => setShowForm(false)}
-                onSave={handleFormSave}
-            />
 
             <View style={styles.row}>
                 <TouchableOpacity style={styles.iconButton}>
@@ -53,12 +48,6 @@ const Footer = () => {
                     <Icon name="clipboard" size={30} color="#000" />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity
-                style={styles.addButton}
-                onPress={() => setShowForm(true)}
-            >
-                <Icon name="add" size={40} color="#fff" />
-            </TouchableOpacity>
         </View>
     );
 };

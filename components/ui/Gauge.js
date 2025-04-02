@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from "../../constants/data";
-import styles from './GaugeStyle';
+import styles from '../../assets/styles/GaugeStyle';
 
 
 const calculatePlatNutrition = (platIngredients) => {
@@ -75,8 +75,6 @@ const GaugeScreen = () => {
         </View>
     );
 };
-
-
 
 
 export default GaugeScreen;
