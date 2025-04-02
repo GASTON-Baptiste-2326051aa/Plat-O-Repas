@@ -18,7 +18,7 @@ export default function Index() {
     const [ingredientsData, setIngredientsData] = useState(INGREDIENTS_DATA || []);
     const [platsData, setPlatsData] = useState(PLATS_DATA || []);
     const [repasData, setRepasData] = useState(REPAS_DATA || []);
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState(1);
 
     function formatDate(inputDate) {
         const date = new Date(inputDate);
