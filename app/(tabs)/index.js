@@ -1,12 +1,12 @@
 import React, {useState, createContext} from "react";
 import {View} from "react-native";
-import Footer from "../../components/ui/footer";
-import IngredientPlatsRepasScreen from "../../components/ui/IngredientPlatsRepasScreen";
+import Footer from "../../screens/footer";
+import IngredientPlatsRepasScreen from "../../screens/IngredientPlatsRepasScreen";
 import {createStackNavigator} from '@react-navigation/stack';
 
 import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from "../../constants/data";
-import {Calendar} from "../../components/ui/Calendar.js";
-import GaugeScreen from "../../components/ui/Gauge";
+import {Calendar} from "../../screens/Calendar.js";
+import GaugeScreen from "../../components/Gauge";
 import {index as styles} from "../../assets/styles/style.js";
 
 // Create data context

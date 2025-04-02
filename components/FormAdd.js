@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../../assets/styles/FormStyle";
+import styles from "../assets/styles/FormStyle";
 import {
     View,
     Text,

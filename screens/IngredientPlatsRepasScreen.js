@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Alert, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import FormEdit from './FormEdit';
-import FormAdd from './FormAdd';
-import styles from "../../assets/styles/IngredientPlatsRepasScreenStyle";
-import { DataContext } from '../../app/(tabs)/index'; // Import the context
+import FormEdit from '../components/FormEdit';
+import FormAdd from '../components/FormAdd';
+import styles from "../assets/styles/IngredientPlatsRepasScreenStyle";
+import { DataContext } from '../app/(tabs)'; // Import the context
 
 const IngredientPlatsRepasScreen = () => {
     const [activeTab, setActiveTab] = useState('Ingrédients');

@@ -3,8 +3,8 @@ import { View, Text, ScrollView } from "react-native";
 import Footer from "./footer";
 import IngredientPlatsRepasScreen from "./IngredientPlatsRepasScreen";
 import { Calendar } from "./Calendar";
-import GaugeScreen from "./Gauge";
-import styles from "../../assets/styles/homepageStyle";
+import GaugeScreen from "../components/Gauge";
+import styles from "../assets/styles/homepageStyle";
 
 const Homepage = () => {
     const [activeTab, setActiveTab] = useState(0); // 0: Calendrier, 1: Ingrédients/Plats/Repas, 2: Gauges

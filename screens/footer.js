@@ -3,7 +3,7 @@ import {Alert, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as DocumentPicker from 'expo-document-picker';
 import {useNavigation} from '@react-navigation/native';
-import styles from './../../assets/styles/footerStyle';
+import styles from '../assets/styles/footerStyle';
 
 const Footer = ({setActiveTab}) => {
     const [selectedFile, setSelectedFile] = useState(null);

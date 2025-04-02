@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FlatList, Text, View, TouchableOpacity } from "react-native";
 import { Feather } from '@expo/vector-icons';
-import styles from "../../assets/styles/CalendarStyle";
-import { DataContext } from '../../app/(tabs)/index';
-import MealDateForm from "../functionalities/MealDateForm";
+import styles from "../assets/styles/CalendarStyle";
+import { DataContext } from '../app/(tabs)';
+import MealDateForm from "../components/MealDateForm";
 
 export function Calendar({ days }) {
     const [calendarData, setCalendarData] = useState([]);

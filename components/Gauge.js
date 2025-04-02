@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text } from "react-native";
-import styles from '../../assets/styles/GaugeStyle';
-import { DataContext } from '../../app/(tabs)/index'; // Import the context
+import styles from '../assets/styles/GaugeStyle';
+import { DataContext } from '../app/(tabs)'; // Import the context
 
 const calculatePlatNutrition = (platIngredients, ingredientsData) => {
     if (!platIngredients || platIngredients.length === 0) return { sel: 0, calories: 0 };

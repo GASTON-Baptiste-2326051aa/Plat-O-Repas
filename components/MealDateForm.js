@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Feather } from '@expo/vector-icons';
-import { DataContext } from '../../app/(tabs)/index';
+import { DataContext } from '../app/(tabs)';
 
 const MealDateForm = ({ visible, onClose }) => {
     const { repasData, setRepasData, platsData } = useContext(DataContext);
