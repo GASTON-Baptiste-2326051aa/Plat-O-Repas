@@ -41,12 +41,7 @@ const Footer = ({setActiveTab}) => {
                 <TouchableOpacity style={styles.iconButton} onPress={() => setActiveTab(1)}>
                     <Icon name="clipboard" size={30} color="#000" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton} onPress={handleImport}>
-                    <Icon name="download" size={30} color="#000"/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton} onPress={() => setActiveTab(2)}>
-                    <Icon name="link" size={30} color="#000"/>
-                </TouchableOpacity>
+
             </View>
             <TouchableOpacity style={styles.addButton}>
                 <Icon name="add" size={40} color="#fff"/>
