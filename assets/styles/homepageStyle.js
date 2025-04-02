@@ -3,15 +3,15 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF8F2',
-        padding: 20,
+        backgroundColor: '#FFFFFF',
+        padding: 22,
     },
     text: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 26,
+        fontWeight: '600',
         color: '#FF6B00',
         textAlign: 'center',
-        marginBottom: 10,
+        marginBottom: 16,
     },
     scrollContent: {
         flexGrow: 1,

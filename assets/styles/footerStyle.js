@@ -6,10 +6,15 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: '#FFF3E0',
-        padding: 10,
+        backgroundColor: '#FFFFFF',
+        padding: 12,
         borderTopWidth: 1,
         borderTopColor: '#FFB74D',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+        elevation: 5,
     },
     row: {
         flexDirection: 'row',
@@ -19,7 +24,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 10,
+        paddingVertical: 12,
     },
 });
 

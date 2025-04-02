@@ -3,26 +3,26 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#FFF3E0",
+        backgroundColor: "#FFFFFF",
         padding: 20,
         justifyContent: "center",
     },
     title: {
-        fontSize: 22,
-        fontWeight: "bold",
+        fontSize: 24,
+        fontWeight: "600",
         textAlign: "center",
         marginTop: 20,
         color: "#FF6B00",
     },
     gaugeContainer: {
         width: "100%",
-        height: 20,
-        backgroundColor: "#fff",
+        height: 24,
+        backgroundColor: "#FFF3E0",
         borderWidth: 1,
-        borderColor: "#FF9800",
-        borderRadius: 5,
+        borderColor: "#FFB74D",
+        borderRadius: 12,
         overflow: "hidden",
-        marginVertical: 10,
+        marginVertical: 12,
     },
     gaugeFill: {
         height: "100%",
@@ -30,10 +30,10 @@ const styles = StyleSheet.create({
     },
     gaugeText: {
         position: "absolute",
-        right: 5,
+        right: 10,
         top: -5,
         fontSize: 16,
-        fontWeight: "bold",
+        fontWeight: "600",
         color: "#E65100",
     },
     recoText: {

@@ -3,30 +3,30 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#FFF8F2",
+        backgroundColor: "#FFFFFF",
     },
     contentContainer: {
-        flex: 1, // Utilise tout l’espace vertical disponible
-        paddingHorizontal: 10,
+        flex: 1,
+        paddingHorizontal: 16,
     },
     listContainer: {
-        flexGrow: 1, // La liste prend tout l'espace restant
+        flexGrow: 1,
     },
     tabContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        backgroundColor: '#ffffff',
-        elevation: 2,
+        backgroundColor: '#FFFFFF',
+        elevation: 4,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
-        shadowRadius: 2,
+        shadowRadius: 4,
         borderBottomWidth: 1,
         borderBottomColor: "#FFD0A3",
     },
     tabButton: {
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 14,
     },
     activeTabButton: {
         borderBottomWidth: 2,
@@ -37,52 +37,57 @@ const styles = StyleSheet.create({
     },
     activeTabButtonText: {
         color: '#FF6B00',
-        fontWeight: 'bold',
+        fontWeight: '600',
     },
-
     headerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 5,
+        marginBottom: 10,
+        marginTop: 10,
     },
     titleText: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontSize: 22,
+        fontWeight: '600',
         textAlign: 'center',
         color: "#FF6B00",
-        marginBottom: 5,
+        marginBottom: 8,
     },
     addButton: {
         backgroundColor: '#FF9800',
         borderRadius: 50,
-        width: 40,
-        height: 40,
+        width: 48,
+        height: 48,
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 3,
+        elevation: 4,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+        shadowOpacity: 0.15,
+        shadowRadius: 4,
     },
     itemContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#FFF3E0',
+        backgroundColor: '#FFFFFF',
         borderRadius: 12,
-        padding: 15,
+        padding: 16,
         marginVertical: 8,
         borderWidth: 1,
         borderColor: "#FFB74D",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 4,
+        elevation: 2,
     },
     itemDetails: {
         flex: 1,
         marginRight: 10,
     },
     itemName: {
-        fontWeight: 'bold',
+        fontWeight: '600',
         fontSize: 16,
         marginBottom: 5,
         color: "#E65100",
@@ -92,16 +97,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     actionButton: {
-        padding: 8,
-        marginLeft: 5,
+        padding: 10,
+        marginLeft: 6,
     },
     deleteButton: {
         backgroundColor: 'rgba(230, 81, 0, 0.1)',
-        borderRadius: 5,
+        borderRadius: 8,
     },
     editButton: {
         backgroundColor: 'rgba(255, 152, 0, 0.1)',
-        borderRadius: 5,
+        borderRadius: 8,
     }
 });
 
