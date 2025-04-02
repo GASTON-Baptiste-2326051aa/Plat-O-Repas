@@ -6,10 +6,10 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: '#f8f8f8',
+        backgroundColor: '#FFF3E0',
         padding: 10,
         borderTopWidth: 1,
-        borderTopColor: '#ddd',
+        borderTopColor: '#FFB74D',
     },
     row: {
         flexDirection: 'row',

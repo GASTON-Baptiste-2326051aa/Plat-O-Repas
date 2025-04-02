@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react
 import { Feather } from '@expo/vector-icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
+import styles from "./IngredientPlatsRepasScreenStyle";
 
 import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from '../../constants/data';
 
@@ -85,13 +86,11 @@ const IngredientPlatsRepasScreen = () => {
         );
     };
     const handleEdit = (item) => {
-        // Code existant inchangé
         setItemToEdit(item);
         setShowEditForm(true);
     };
 
     const handleSaveEdit = (updatedItem) => {
-        // Code existant inchangé
         switch (activeTab) {
             case 'Ingrédients':
                 setIngredientsData(
@@ -299,100 +298,5 @@ const IngredientPlatsRepasScreen = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    tabContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: '#ffffff',
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-    },
-    tabButton: {
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-    },
-    activeTabButton: {
-        borderBottomWidth: 2,
-        borderBottomColor: '#007bff',
-    },
-    tabButtonText: {
-        color: '#666',
-    },
-    activeTabButtonText: {
-        color: '#007bff',
-        fontWeight: 'bold',
-    },
-    contentContainer: {
-        flex: 1,
-        padding: 10,
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    titleText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    addButton: {
-        backgroundColor: '#4CAF50',
-        borderRadius: 50,
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 3,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-    },
-    listContainer: {
-        paddingBottom: 10,
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#D3D3D3',
-        borderRadius: 12,
-        padding: 15,
-        marginVertical: 8,
-    },
-    itemDetails: {
-        flex: 1,
-        marginRight: 10,
-    },
-    itemName: {
-        fontWeight: 'bold',
-        fontSize: 16,
-        marginBottom: 5,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    actionButton: {
-        padding: 8,
-        marginLeft: 5,
-    },
-    deleteButton: {
-        backgroundColor: 'rgba(244, 67, 54, 0.1)',
-        borderRadius: 5,
-    },
-    editButton: {
-        backgroundColor: 'rgba(33, 150, 243, 0.1)',
-        borderRadius: 5,
-    }
-});
 
 export default IngredientPlatsRepasScreen;
