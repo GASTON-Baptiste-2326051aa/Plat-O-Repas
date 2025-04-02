@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
@@ -17,6 +17,7 @@ const IngredientPlatsRepasScreen = () => {
 
     // Fonction pour calculer les valeurs nutritionnelles d'un plat
     const calculatePlatNutrition = (platIngredients) => {
+        // Code existant inchangé
         if (!platIngredients || platIngredients.length === 0) return { sel: 0, calories: 0 };
 
         return platIngredients.reduce((total, ingredientName) => {
@@ -32,6 +33,7 @@ const IngredientPlatsRepasScreen = () => {
 
     // Fonction pour calculer les valeurs nutritionnelles d'un repas
     const calculateRepasNutrition = (repasPlats) => {
+        // Code existant inchangé
         if (!repasPlats || repasPlats.length === 0) return { sel: 0, calories: 0 };
 
         return repasPlats.reduce((total, platName) => {
@@ -47,12 +49,76 @@ const IngredientPlatsRepasScreen = () => {
         }, { sel: 0, calories: 0 });
     };
 
+    // Nouvelle fonction pour gérer la suppression d'un élément
+    const handleDelete = (item) => {
+        // Vérifier si l'élément est utilisé dans un autre onglet
+        let itemInUse = false;
+        let message = "";
+
+        if (activeTab === 'Ingrédients') {
+            // Vérifier si l'ingrédient est utilisé dans un plat
+            const usedInPlats = platsData.some(plat =>
+                plat.ingredients && plat.ingredients.includes(item.name)
+            );
+            if (usedInPlats) {
+                itemInUse = true;
+                message = "Cet ingrédient est utilisé dans un ou plusieurs plats. Impossible de le supprimer.";
+            }
+        } else if (activeTab === 'Plats') {
+            // Vérifier si le plat est utilisé dans un repas
+            const usedInRepas = repasData.some(repas =>
+                repas.plats && repas.plats.includes(item.name)
+            );
+            if (usedInRepas) {
+                itemInUse = true;
+                message = "Ce plat est utilisé dans un ou plusieurs repas. Impossible de le supprimer.";
+            }
+        }
+
+        if (itemInUse) {
+            Alert.alert("Suppression impossible", message);
+            return;
+        }
+
+        // Afficher une confirmation avant de supprimer
+        Alert.alert(
+            "Confirmation",
+            `Êtes-vous sûr de vouloir supprimer "${item.name}" ?`,
+            [
+                {
+                    text: "Annuler",
+                    style: "cancel"
+                },
+                {
+                    text: "Supprimer",
+                    style: "destructive",
+                    onPress: () => {
+                        // Supprimer l'élément sélectionné
+                        switch (activeTab) {
+                            case 'Ingrédients':
+                                setIngredientsData(ingredientsData.filter(ing => ing.id !== item.id));
+                                break;
+                            case 'Plats':
+                                setPlatsData(platsData.filter(plat => plat.id !== item.id));
+                                break;
+                            case 'Repas':
+                                setRepasData(repasData.filter(repas => repas.id !== item.id));
+                                break;
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
     const handleEdit = (item) => {
+        // Code existant inchangé
         setItemToEdit(item);
         setShowEditForm(true);
     };
 
     const handleSaveEdit = (updatedItem) => {
+        // Code existant inchangé
         switch (activeTab) {
             case 'Ingrédients':
                 setIngredientsData(
@@ -82,6 +148,7 @@ const IngredientPlatsRepasScreen = () => {
     };
 
     const handleAddItem = (newItem) => {
+        // Code existant inchangé
         switch (activeTab) {
             case 'Ingrédients':
                 const newIngredient = {
@@ -140,17 +207,26 @@ const IngredientPlatsRepasScreen = () => {
                         <Text>Plats : {item.plats.join(', ')}</Text>
                     )}
                 </View>
-                <TouchableOpacity
-                    style={styles.editButton}
-                    onPress={() => handleEdit(item)}
-                >
-                    <Feather name="edit" size={24} color="black" />
-                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={styles.actionButton}
+                        onPress={() => handleEdit(item)}
+                    >
+                        <Feather name="edit" size={22} color="#2196F3" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.actionButton, styles.deleteButton]}
+                        onPress={() => handleDelete(item)}
+                    >
+                        <Feather name="trash-2" size={22} color="#f44336" />
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     };
 
     const getDataForActiveTab = () => {
+        // Code existant inchangé
         switch (activeTab) {
             case 'Ingrédients':
                 return ingredientsData;
@@ -164,6 +240,7 @@ const IngredientPlatsRepasScreen = () => {
     };
 
     const renderContent = () => {
+        // Code existant inchangé
         let title;
         switch (activeTab) {
             case 'Ingrédients':
@@ -229,9 +306,9 @@ const IngredientPlatsRepasScreen = () => {
                 }}
                 onSave={handleSaveEdit}
                 itemToEdit={itemToEdit}
-                currentTab={activeTab}  // Ajout de l'onglet actif
-                ingredients={ingredientsData} // Ajout des ingrédients
-                plats={platsData} // Ajout des plats
+                currentTab={activeTab}
+                ingredients={ingredientsData}
+                plats={platsData}
             />
 
             <FormAdd
@@ -327,8 +404,21 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 5,
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    actionButton: {
+        padding: 8,
+        marginLeft: 5,
+    },
+    deleteButton: {
+        backgroundColor: 'rgba(244, 67, 54, 0.1)',
+        borderRadius: 5,
+    },
     editButton: {
-        padding: 5,
+        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+        borderRadius: 5,
     }
 });
 
