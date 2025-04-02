@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, Text, View} from "react-native";
-import { REPAS_DATA } from "../../constants/data";
+import React, { useState, useEffect, useContext } from "react";
+import { FlatList, Text, View } from "react-native";
 import styles from "../../assets/styles/CalendarStyle";
+import { DataContext } from '../../app/(tabs)/index'; // Import the context
 
-export function Calendar() {
+export function Calendar({ days }) {
     const [calendarData, setCalendarData] = useState([]);
+
+    const { repasData, platsData } = useContext(DataContext);
 
     useEffect(() => {
         const generateCalendarData = () => {
@@ -22,12 +24,12 @@ export function Calendar() {
                 });
 
                 const dayRepas = [];
-                if (REPAS_DATA && REPAS_DATA.length > 0) {
+                if (repasData && repasData.length > 0) {
                     const numberOfMeals = Math.floor(Math.random() * 3) + 1;
 
                     for (let j = 0; j < numberOfMeals; j++) {
-                        const randomIndex = Math.floor(Math.random() * REPAS_DATA.length);
-                        const selectedRepas = REPAS_DATA[randomIndex];
+                        const randomIndex = Math.floor(Math.random() * repasData.length);
+                        const selectedRepas = repasData[randomIndex];
 
                         if (!dayRepas.some(repas => repas.id === selectedRepas.id)) {
                             dayRepas.push({
@@ -50,7 +52,7 @@ export function Calendar() {
         };
 
         setCalendarData(generateCalendarData());
-    }, []);
+    }, [repasData]);
 
     const renderMeal = (repas) => {
         return (

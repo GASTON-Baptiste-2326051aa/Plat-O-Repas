@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ScrollView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, TouchableOpacity, FlatList, Alert, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 import styles from "../../assets/styles/IngredientPlatsRepasScreenStyle";
-
-import { INGREDIENTS_DATA, PLATS_DATA, REPAS_DATA } from '../../constants/data';
+import { DataContext } from '../../app/(tabs)/index'; // Import the context
 
 const IngredientPlatsRepasScreen = () => {
     const [activeTab, setActiveTab] = useState('Ingrédients');
     const [showEditForm, setShowEditForm] = useState(false);
     const [showAddForm, setShowAddForm] = useState(false);
     const [itemToEdit, setItemToEdit] = useState(null);
-    const [ingredientsData, setIngredientsData] = useState(INGREDIENTS_DATA);
-    const [platsData, setPlatsData] = useState(PLATS_DATA);
-    const [repasData, setRepasData] = useState(REPAS_DATA);
+
+    // Use the central context instead of local state
+    const {
+        ingredientsData,
+        setIngredientsData,
+        platsData,
+        setPlatsData,
+        repasData,
+        setRepasData
+    } = useContext(DataContext);
 
     const calculatePlatNutrition = (platIngredients) => {
         if (!platIngredients || platIngredients.length === 0) return { sel: 0, calories: 0 };
@@ -163,6 +169,8 @@ const IngredientPlatsRepasScreen = () => {
                 break;
         }
     };
+
+    // Rest of the component remains the same...
 
     const renderItem = ({ item }) => {
         let calories, sel;
