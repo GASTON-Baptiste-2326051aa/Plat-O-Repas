@@ -36,7 +36,6 @@ const MealDateForm = ({ visible, onClose }) => {
             return;
         }
 
-        // Créer un nouvel objet repas
         const newRepas = {
             id: String(Date.now()),
             date: selectedDate.toISOString(),
@@ -44,14 +43,11 @@ const MealDateForm = ({ visible, onClose }) => {
             name: selectedMeal
         };
 
-        // Ajouter le nouveau repas
         setRepasData([...repasData, newRepas]);
 
-        // Réinitialiser le formulaire
         setSelectedMeal('');
         setSelectedPlat('');
 
-        // Fermer le formulaire
         onClose();
     };
 

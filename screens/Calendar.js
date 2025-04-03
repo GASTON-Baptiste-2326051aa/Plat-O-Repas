@@ -15,7 +15,6 @@ export function Calendar({ days }) {
             const data = [];
             const today = new Date();
 
-            // Créer le tableau de dates pour la semaine
             for (let i = 0; i < 7; i++) {
                 const currentDate = new Date(today);
                 currentDate.setDate(today.getDate() + i);
@@ -26,19 +25,17 @@ export function Calendar({ days }) {
                     month: 'long'
                 });
 
-                // Trouver les repas pour cette date
                 const dayRepas = repasData
                     .filter(repas => {
                         const repasDate = new Date(repas.date);
                         return repasDate.toDateString() === currentDate.toDateString();
                     })
                     .map(repas => {
-                        // Trouver les détails du plat
                         const plat = platsData.find(p => p.id === repas.plat);
                         return {
                             id: repas.id,
-                            name: repas.name, // Type de repas (déjeuner, dîner, etc.)
-                            platName: plat ? plat.name : "Plat inconnu",
+                            name: repas.name,
+                            platName: plat ? plat.name : "Repas inconnu",
                             plats: plat ? [plat.name] : []
                         };
                     });
